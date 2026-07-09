@@ -42,16 +42,17 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Ambient background graphics */
         .liquid-gradient {
-            background: radial-gradient(circle at 20% 30%, rgba(10, 132, 255, 0.08) 0%, transparent 60%),
-                        radial-gradient(circle at 80% 70%, rgba(235, 106, 18, 0.05) 0%, transparent 60%), #0e0e0e;
+            background: radial-gradient(circle at 10% 20%, rgba(10, 132, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(235, 106, 18, 0.06) 0%, transparent 50%), #0e0e0e;
         }
 
-        /* Restored Pristine Liquid Glass CSS configurations */
+        /* Glassmorphic variables */
         .liquid-glass {
             background: rgba(25, 25, 25, 0.4);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+            backdrop-filter: blur(45px);
+            -webkit-backdrop-filter: blur(45px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), 
                         inset 0 1px 1px rgba(255, 255, 255, 0.15);
@@ -59,36 +60,83 @@
 
         .glass-card {
             background: rgba(25, 25, 25, 0.35);
-            backdrop-filter: blur(30px);
-            border: 0.5px solid rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 15px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
         }
 
         .glass-card:active { transform: scale(0.97); }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Bottom navigation capsule styling */
+        .navigation-pill {
+            background: rgba(20, 20, 20, 0.55);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+
         .bottom-sheet { transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .bottom-sheet.active { transform: translateY(0); }
         .glossy-button { background: #0A84FF; box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2); }
         .frosted-border { border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.02); }
         .drag-handle { width: 36px; height: 5px; background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        
+        /* Interactive dynamic dropdown options container */
+        .custom-dropdown-menu {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+        }
+        .custom-dropdown-menu::-webkit-scrollbar { width: 4px; }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
+
+        #ton-connect-btn button {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            padding: 10px 18px !important;
+        }
     </style>
 </head>
-<body class="liquid-gradient min-h-screen pb-32">
+<body class="liquid-gradient min-h-screen pb-36">
 
-    <!-- Top App Navigation -->
-    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-[#131313]/60 backdrop-blur-[30px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
+    <!-- Atmospheric Glow Nodes (Design depth) -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 left-1/10 w-[450px] h-[450px] bg-primary/10 blur-[130px] rounded-full"></div>
+        <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-size: 28px;">storefront</span>
-            <h1 class="text-lg font-bold text-on-surface" id="headerTitle">MidMarket</h1>
+            <h1 class="text-lg font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
         </div>
-        <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
-            <svg class="w-5 h-5 mr-1.5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5 shadow-inner">
+            <svg class="w-4 h-4 mr-1.5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="#24A1DE"/>
                 <path d="M50 25 L56.5 39 L72 39.5 L60 48.5 L64.5 64 L50 55 L35.5 64 L40 48.5 L28 39.5 L43.5 39 Z" fill="white"/>
             </svg>
-            <span class="font-mono-sm text-[12px] font-semibold text-white tracking-wide" id="globalBalance">0 GRAM</span>
+            <span class="font-mono-sm text-[12px] font-bold text-white tracking-wide" id="globalBalance">0 GRAM</span>
         </div>
     </header>
 
@@ -96,46 +144,46 @@
 
         <!-- ================= TAB 1: STORE ================= -->
         <section id="tab-store" class="tab-content active">
-            <div class="mb-4 mt-4">
-                <p class="text-[11px] font-bold text-primary tracking-widest uppercase mb-1">Explore Collections</p>
-                <h2 class="text-xl font-bold text-on-surface">MidMarket Store</h2>
+            <div class="mb-5 mt-4">
+                <p class="text-[11px] font-bold text-primary tracking-widest uppercase mb-1">Explore Escrow</p>
+                <h2 class="text-2xl font-bold text-on-surface tracking-tight">MidMarket Store</h2>
             </div>
 
-            <!-- Custom Horizontal Image Dropdowns Filters -->
-            <div class="grid grid-cols-3 gap-2 mb-6">
-                <!-- Dropdown A: Gift Type -->
+            <!-- Highly styled dynamic selector dropdowns -->
+            <div class="grid grid-cols-3 gap-2.5 mb-6">
+                <!-- Selector A: Gift Type -->
                 <div class="relative">
-                    <button onclick="toggleDropdown('giftTypeDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
-                        <span id="labelGiftType">Gift Type</span>
-                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    <button onclick="toggleFilterMenu('giftTypeDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
+                        <span id="labelGiftType" class="truncate">Gift Type</span>
+                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
                     </button>
-                    <div id="giftTypeDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
-                        <button onclick="applyGiftTypeFilter('all', 'All Gifts')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Gifts</button>
-                        <div id="giftTypeOptions"></div>
+                    <div id="giftTypeDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
+                        <button onclick="applyGiftTypeFilter('all', 'All Gifts')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Gifts</button>
+                        <div id="giftTypeOptions" class="space-y-1"></div>
                     </div>
                 </div>
 
-                <!-- Dropdown B: Model -->
+                <!-- Selector B: Model -->
                 <div class="relative">
-                    <button onclick="toggleDropdown('modelDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
-                        <span id="labelModel">Model</span>
-                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    <button onclick="toggleFilterMenu('modelDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
+                        <span id="labelModel" class="truncate">Model</span>
+                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
                     </button>
-                    <div id="modelDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
-                        <button onclick="applyModelFilter('all', 'All Models')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Models</button>
-                        <div id="modelOptions"></div>
+                    <div id="modelDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
+                        <button onclick="applyModelFilter('all', 'All Models')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Models</button>
+                        <div id="modelOptions" class="space-y-1"></div>
                     </div>
                 </div>
 
-                <!-- Dropdown C: Backdrop -->
+                <!-- Selector C: Backdrop -->
                 <div class="relative">
-                    <button onclick="toggleDropdown('backdropDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
-                        <span id="labelBackdrop">Backdrop</span>
-                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    <button onclick="toggleFilterMenu('backdropDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
+                        <span id="labelBackdrop" class="truncate">Backdrop</span>
+                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
                     </button>
-                    <div id="backdropDrop" class="hidden absolute right-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
-                        <button onclick="applyBackdropFilter('all', 'All Colors')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Backdrops</button>
-                        <div id="backdropOptions"></div>
+                    <div id="backdropDrop" class="hidden absolute right-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
+                        <button onclick="applyBackdropFilter('all', 'All Colors')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Colors</button>
+                        <div id="backdropOptions" class="space-y-1"></div>
                     </div>
                 </div>
             </div>
@@ -145,50 +193,62 @@
 
         <!-- ================= TAB 2: INVENTORY ================= -->
         <section id="tab-inventory" class="tab-content">
-            <div class="frosted-border rounded-xl p-5 mb-6 mt-4 relative overflow-hidden text-xs">
+            <div class="frosted-border rounded-2xl p-5 mb-6 mt-4 relative overflow-hidden text-xs">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-[30px] rounded-full"></div>
                 <h3 class="font-bold text-white mb-2 flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-primary text-base">autorenew</span>
                     Automated Telegram Escrow Deposits
                 </h3>
-                <p class="text-on-surface-variant leading-relaxed mb-2">Simply send your native Star Gift directly inside Telegram to our escrow userbot account:</p>
-                <div class="bg-black/40 rounded-lg p-2.5 flex justify-between items-center border border-white/5 mb-2">
-                    <span class="font-mono text-white text-[11px]" id="botEscrowName">@GiftRelayerBot</span>
-                    <span class="material-symbols-outlined text-[14px] cursor-pointer text-primary" onclick="navigator.clipboard.writeText('@GiftRelayerBot')">content_copy</span>
+                <p class="text-on-surface-variant leading-relaxed mb-3 opacity-90">Send your native Star Gift directly inside Telegram to our escrow agent account:</p>
+                <div class="bg-black/40 rounded-xl p-3 flex justify-between items-center border border-white/5 mb-3 shadow-inner">
+                    <span class="font-mono text-white text-[11px] font-semibold" id="botEscrowName">@GiftRelayerBot</span>
+                    <span class="material-symbols-outlined text-[15px] cursor-pointer text-primary hover:text-white" onclick="navigator.clipboard.writeText('@GiftRelayerBot')">content_copy</span>
                 </div>
-                <p class="text-[10px] text-on-surface-variant opacity-60">No payment codes needed. The Relayer intercepts the sender ID dynamically.</p>
+                <p class="text-[10px] text-on-surface-variant opacity-60 leading-normal">Your Telegram sender ID is intercepted on the fly, instantly routing the asset to your escrow inventory list.</p>
             </div>
 
-            <div class="mb-4"><h2 class="text-base font-bold text-on-surface">Stored Escrow Inventory</h2></div>
+            <div class="mb-4 mt-2">
+                <h2 class="text-base font-bold text-on-surface">Escrow Inventory</h2>
+                <p class="text-xs text-on-surface-variant">Manage items currently stored inside our platform relayer</p>
+            </div>
             <div class="grid grid-cols-2 gap-4" id="inventoryGrid"></div>
         </section>
 
         <!-- ================= TAB 3: SHOPPING QUEUE ================= -->
         <section id="tab-cart" class="tab-content">
-            <div class="mb-6 mt-4"><h2 class="text-xl font-bold text-on-surface">Shopping Queue</h2></div>
+            <div class="mb-6 mt-4">
+                <h2 class="text-2xl font-bold text-on-surface">Shopping Queue</h2>
+                <p class="text-xs text-on-surface-variant">Perform batch checkouts on off-chain listed gifts instantly</p>
+            </div>
             <div class="space-y-4" id="cartItemsList"></div>
-            <div class="frosted-border rounded-xl p-5 mt-6 flex flex-col gap-4">
-                <div class="flex justify-between items-center text-sm"><span class="text-on-surface-variant">Total Cost</span><span class="font-bold text-white text-lg font-mono-sm" id="cartTotalPrice">0 GRAM</span></div>
-                <button class="glossy-button w-full py-4 rounded-lg font-bold text-white flex items-center justify-center gap-2" id="checkoutBtn">Buy Now</button>
+            
+            <div class="frosted-border rounded-2xl p-5 mt-6 flex flex-col gap-4">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-on-surface-variant">Total Cost</span>
+                    <span class="font-bold text-white text-lg font-mono-sm" id="cartTotalPrice">0 GRAM</span>
+                </div>
+                <button class="glossy-button w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-sm" id="checkoutBtn">Buy Now</button>
             </div>
         </section>
 
         <!-- ================= TAB 4: PROFILE & SETTINGS ================= -->
         <section id="tab-profile" class="tab-content">
-            <div class="frosted-border rounded-xl p-5 mb-6 mt-4 text-center flex flex-col items-center">
-                <p class="text-xs text-on-surface-variant mb-2">My Ledger Balance</p>
-                <div class="flex items-center mb-4">
+            <div class="frosted-border rounded-2xl p-6 mb-6 mt-4 text-center flex flex-col items-center shadow-lg relative overflow-hidden">
+                <div class="absolute -top-10 -left-10 w-24 h-24 bg-primary-container/10 blur-2xl rounded-full"></div>
+                <p class="text-xs text-on-surface-variant mb-2 font-medium">Internal Vault Ledger</p>
+                <div class="flex items-center mb-5">
                     <svg class="w-8 h-8 mr-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 5 L95 50 L50 95 L5 50 Z" fill="#24A1DE"/><path d="M50 25 L56.5 39 L72 39.5 L60 48.5 L64.5 64 L50 55 L35.5 64 L40 48.5 L28 39.5 L43.5 39 Z" fill="white"/></svg>
                     <span class="text-2xl font-bold text-white font-mono-sm" id="profileBalance">0 GRAM</span>
                 </div>
                 <div class="flex gap-3 w-full">
-                    <button class="flex-1 py-2.5 rounded-lg bg-primary text-on-primary text-xs font-semibold" onclick="triggerTONDeposit()">On-Chain Deposit</button>
-                    <button class="flex-1 py-2.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold" onclick="alert('Withdraw triggered!')">Withdraw</button>
+                    <button class="flex-1 py-3 rounded-xl bg-primary text-on-primary text-xs font-bold shadow-md active:scale-95 duration-100" onclick="triggerTONDeposit()">On-Chain Deposit</button>
+                    <button class="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-white/10 active:scale-95 duration-100" onclick="alert('Withdraw triggered!')">Withdraw</button>
                 </div>
             </div>
 
             <div class="mb-6">
-                <h3 class="text-sm font-bold text-on-surface mb-3 flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary">account_balance_wallet</span>TON Connect SDK</h3>
-                <div class="frosted-border rounded-xl p-4 flex flex-col gap-3">
+                <h3 class="text-sm font-bold text-on-surface mb-3 flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary">account_balance_wallet</span>TON Connect Wallet Integration</h3>
+                <div class="frosted-border rounded-2xl p-5 flex flex-col gap-3">
                     <div id="ton-connect-btn" class="flex justify-center"></div>
                 </div>
             </div>
@@ -198,24 +258,25 @@
 
     <!-- ================= THE PREVIEW BOTTOM SHEET MODAL ================= -->
     <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="detailModalOverlay">
-        <div class="absolute inset-0 bg-[#0e0e0e]/70 backdrop-blur-md opacity-0 transition-opacity duration-300" id="modalBg"></div>
-        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[32px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh]">
+        <div class="absolute inset-0 bg-[#0e0e0e]/75 backdrop-blur-md opacity-0 transition-opacity duration-300" id="modalBg"></div>
+        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh]">
             <div class="w-full py-4 flex justify-center cursor-pointer" id="closeHandle"><div class="drag-handle"></div></div>
             <div class="w-full overflow-y-auto flex flex-col items-center no-scrollbar">
-                <!-- Compact presentation wrapper -->
-                <div class="relative w-36 h-36 flex items-center justify-center mt-1 rounded-2xl overflow-hidden shadow-inner" id="modalCanvasBox">
+                
+                <!-- Presentation box -->
+                <div class="relative w-36 h-36 flex items-center justify-center mt-1 rounded-2xl overflow-hidden shadow-inner border border-white/5" id="modalCanvasBox">
                     <div class="modal-lottie-container" id="modalLottie"></div>
                 </div>
                 
-                <div class="text-center mt-4 space-y-1"><h2 class="text-lg font-bold text-white tracking-tight" id="modalTitle">-</h2><p class="text-[10px] text-on-surface-variant tracking-wider uppercase" id="modalNumber">-</p></div>
+                <div class="text-center mt-4 space-y-0.5"><h2 class="text-lg font-bold text-white tracking-tight" id="modalTitle">-</h2><p class="text-[10px] text-on-surface-variant font-mono tracking-wider uppercase" id="modalNumber">-</p></div>
                 
-                <!-- Ultra Compact Single-Line Metadata (Prevents Lottie Canvas collapsing) -->
+                <!-- Highly Compact Metadata Row (Prevents layout shifting & collapsing) -->
                 <div class="w-full mt-4 flex justify-around items-center border-y border-white/5 py-3 text-center text-[9px] tracking-wide text-on-surface-variant">
-                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoModel">-</span><span>Model</span></div>
+                    <div><span class="block font-bold text-white text-[11px] leading-tight" id="bentoModel">-</span><span>Model</span></div>
                     <div class="h-6 w-px bg-white/10"></div>
-                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoBackdrop">-</span><span>Backdrop</span></div>
+                    <div><span class="block font-bold text-white text-[11px] leading-tight" id="bentoBackdrop">-</span><span>Backdrop</span></div>
                     <div class="h-6 w-px bg-white/10"></div>
-                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoSymbol">-</span><span>Symbol</span></div>
+                    <div><span class="block font-bold text-white text-[11px] leading-tight" id="bentoSymbol">-</span><span>Symbol</span></div>
                 </div>
 
                 <div class="w-full mt-4">
@@ -232,29 +293,29 @@
         </div>
     </div>
 
-    <!-- ================= ESCROW SUCCESS CONFIRMATION MODAL ================= -->
+    <!-- ================= ESCROW CONFIRMATION MODAL ================= -->
     <div class="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center p-4" id="confirmOverlay">
         <div class="absolute inset-0 bg-[#0e0e0e]/85 backdrop-blur-md opacity-0 transition-opacity duration-300" id="confirmBg"></div>
         <div class="glass-card w-full max-w-sm rounded-[24px] p-6 flex flex-col items-center text-center relative z-10 scale-95 opacity-0 transition-all duration-300" id="confirmCard">
             <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4 text-primary"><span class="material-symbols-outlined text-2xl">check_circle</span></div>
             <h3 class="text-sm font-bold text-white mb-1.5" id="confirmTitle">-</h3>
             <p class="text-xs text-on-surface-variant leading-relaxed mb-6" id="confirmDesc">-</p>
-            <button class="glossy-button w-full py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100" id="confirmAckBtn">View Inventory</button>
+            <button class="glossy-button w-full py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100" id="confirmAckBtn">View Escrow</button>
         </div>
     </div>
 
-    <!-- TAB BAR (FLOATING TRANS_GLASS PILL) -->
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-around items-center px-4 py-2.5 liquid-glass rounded-full w-[fit-content] min-w-[300px]">
+    <!-- TAB BAR (FLOATING GLASS PILL) -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-around items-center px-4 py-2.5 navigation-pill rounded-full w-[fit-content] min-w-[310px]">
         <button class="w-12 h-12 flex items-center justify-center text-primary bg-white/5 rounded-full transition-all duration-300" data-tab="store"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span></button>
         <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="inventory"><span class="material-symbols-outlined">auto_awesome_motion</span></button>
-        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300 relative" data-tab="cart"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full hidden" id="cartBadge"></span></button>
+        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300 relative" data-tab="cart"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full hidden" id="cartBadge"></span></button>
         <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="profile"><span class="material-symbols-outlined">account_circle</span></button>
     </nav>
 
     <!-- CORE LOGIC AND API FLOW -->
     <script>
         // --- CONFIGURE YOUR SECURE HTTPS DOMAIN PATH TO STOP MIXED CONTENT ERRORS ---
-        const API_BASE = "https://market.vasiliy.fun"; // Change to your SSL secured domain
+        const API_BASE = "https://market.vasiliy.fun";
 
         // Read Dynamic identity variables using Telegram WebApp SDK
         const tg = window.Telegram.WebApp;
@@ -269,17 +330,15 @@
 
         const PLATFORM_ESCROW_WALLET = "EQB7YourMarketEscrowWalletAddressHere_abc123";
 
-        let filterData = { gift_types: [], models: [], backdrops: [] };
-        let currentFilters = { model: 'all', backdrop: 'all', type: 'all' };
+        let currentActiveFilters = { model: 'all', backdrop: 'all', type: 'all' };
         let activeAnimation = null;
         let selectedGift = null;
         let shoppingCart = [];
 
-        function toggleDropdown(id) {
-            document.querySelectorAll('[id$="Drop"]').forEach(el => {
-                if (el.id !== id) el.classList.add('hidden');
-            });
-            document.getElementById(id).classList.toggle('hidden');
+        // Interactive Dropdowns Controls
+        function toggleFilterMenu(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
         }
 
         async function fetchDropdownFilters() {
@@ -291,7 +350,7 @@
                 typeContainer.innerHTML = '';
                 filterData.gift_types.forEach(t => {
                     const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
                     btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${t.image_url}"> ${t.name}`;
                     btn.onclick = () => applyGiftTypeFilter(t.id, t.name);
                     typeContainer.appendChild(btn);
@@ -301,7 +360,7 @@
                 modelContainer.innerHTML = '';
                 filterData.models.forEach(m => {
                     const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
                     btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${m.image_url}"> ${m.name}`;
                     btn.onclick = () => applyModelFilter(m.name, m.name);
                     modelContainer.appendChild(btn);
@@ -311,7 +370,7 @@
                 backdropContainer.innerHTML = '';
                 filterData.backdrops.forEach(b => {
                     const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
                     btn.innerHTML = `<div class="w-3.5 h-3.5 rounded-full" style="background: ${b.gradient}"></div> ${b.name}`;
                     btn.onclick = () => applyBackdropFilter(b.name, b.name);
                     backdropContainer.appendChild(btn);
@@ -324,19 +383,19 @@
         function applyGiftTypeFilter(val, label) {
             currentFilters.type = val;
             document.getElementById('labelGiftType').textContent = label;
-            toggleDropdown('giftTypeDrop');
+            toggleFilterMenu('giftTypeDrop');
             applyActiveFilters();
         }
         function applyModelFilter(val, label) {
             currentFilters.model = val;
             document.getElementById('labelModel').textContent = label;
-            toggleDropdown('modelDrop');
+            toggleFilterMenu('modelDrop');
             applyActiveFilters();
         }
         function applyBackdropFilter(val, label) {
             currentFilters.backdrop = val;
             document.getElementById('labelBackdrop').textContent = label;
-            toggleDropdown('backdropDrop');
+            toggleFilterMenu('backdropDrop');
             applyActiveFilters();
         }
 
@@ -379,7 +438,7 @@
             const grid = document.getElementById('storeGrid');
             grid.innerHTML = '';
             if (listings.length === 0) {
-                grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8">No active market listings matches.</p>`;
+                grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8">No matching active catalog listings.</p>`;
                 return;
             }
             listings.forEach(gift => {
@@ -421,15 +480,21 @@
                     body: JSON.stringify({ gift_id: id, buyer_id: USER_TG_ID })
                 });
                 if (r.status === 400) {
-                    alert("Buy parameters rejected: check balance.");
+                    alert("Transaction failed: Check balance boundaries.");
                     return;
                 }
                 await syncUserProfile();
                 await applyActiveFilters();
                 await syncInventory();
                 
-                triggerSuccessModal("Purchase Successful!", "Your collectible gift has been processed securely and saved inside your off-chain escrow account.", "Go to Escrow", "inventory");
-            } catch(e) { console.error(e); }
+                triggerSuccessModal("Purchase Completed!", "Your collectible is parked securely in your Relayer escrow. Click below to view.", "View Escrow", "inventory");
+            } catch(e) {
+                alert("Buy trade failed: Check ledger bounds.");
+            }
+        }
+
+        function toggleCartQueue(id) {
+            alert("Added item to shopping checkout queue.");
         }
 
         async function syncInventory() {
@@ -439,7 +504,7 @@
                 let items = await r.json();
                 grid.innerHTML = '';
                 if (items.length === 0) {
-                    grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8">Your Relayer Escrow is empty.</p>`;
+                    grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8 font-medium">No stored elements in relayer.</p>`;
                     return;
                 }
                 items.forEach((item, index) => {
@@ -465,7 +530,9 @@
                     `;
                     grid.appendChild(card);
                 });
-            } catch(e) { console.error(e); }
+            } catch(e) {
+                console.error("Inventory load failed:", e);
+            }
         }
 
         function showInlineListingInput(index, id) {
@@ -525,7 +592,7 @@
                     {
                         address: PLATFORM_ESCROW_WALLET,
                         amount: nanogramsValue,
-                        // Custom Payload: encodes user's real Telegram ID dynamically
+                        // Encoding your user's native Telegram ID string directly as message payload
                         payload: btoa(USER_TG_ID.toString())
                     }
                 ]
@@ -533,7 +600,7 @@
 
             try {
                 await tonConnectUI.sendTransaction(transactionObject);
-                alert("Transaction broadcast on-chain! Confirming balance adjustment...");
+                alert("Transaction signed! Checking background verify loop...");
 
                 let r = await fetch(`${API_BASE}/api/verify-deposit`, {
                     method: "POST",
@@ -545,7 +612,7 @@
                     await syncUserProfile();
                     triggerSuccessModal("Deposit Credited!", `Your profile balance was updated with +${data.credited_grams} GRAM.`, "Awesome", "profile");
                 } else {
-                    alert("Verify queue pending. It will credit automatically when validated.");
+                    alert("On-chain confirm queue is pending. Balance will update on confirmation.");
                 }
             } catch(e) {
                 alert("Transaction expired or rejected.");
