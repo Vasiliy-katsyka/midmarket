@@ -315,7 +315,7 @@
     <!-- CORE LOGIC AND API FLOW -->
     <script>
         // --- CONFIGURE YOUR SECURE HTTPS DOMAIN PATH TO STOP MIXED CONTENT ERRORS ---
-        const API_BASE = "https://market.vasiliy.fun";
+        const API_BASE = "https://market.vasiliy.fun:8443";
 
         // Read Dynamic identity variables using Telegram WebApp SDK
         const tg = window.Telegram.WebApp;
@@ -570,7 +570,7 @@
         let tonConnectUI;
         document.addEventListener("DOMContentLoaded", () => {
             tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                manifestUrl: 'https://github.com/Vasiliy-katsyka/midmarket/main/tonconnect-manifest.json',
+                manifestUrl: 'https://raw.githubusercontent.com/Vasiliy-katsyka/midmarket/refs/heads/main/tonconnect-manifest.json',
                 buttonRootId: 'ton-connect-btn'
             });
         });
