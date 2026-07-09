@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MidMarket - Telegram Collectibles</title>
+    
+    <!-- Telegram Web App SDK Integration -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- TON Connect UI Script -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#aac7ff",
+                    "primary-container": "#0A84FF",
+                    "on-surface-variant": "#c0c6d6",
+                    "on-surface": "#e2e2e2",
+                    "background": "#0e0e0e"
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+        body {
+            background-color: #0e0e0e;
+            color: #e2e2e2;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .liquid-gradient {
+            background: radial-gradient(circle at 20% 30%, rgba(10, 132, 255, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 70%, rgba(235, 106, 18, 0.05) 0%, transparent 60%), #0e0e0e;
+        }
+
+        /* Restored Pristine Liquid Glass CSS configurations */
+        .liquid-glass {
+            background: rgba(25, 25, 25, 0.4);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(25, 25, 25, 0.35);
+            backdrop-filter: blur(30px);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .glass-card:active { transform: scale(0.97); }
+        .bottom-sheet { transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bottom-sheet.active { transform: translateY(0); }
+        .glossy-button { background: #0A84FF; box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2); }
+        .frosted-border { border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.02); }
+        .drag-handle { width: 36px; height: 5px; background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="liquid-gradient min-h-screen pb-32">
+
+    <!-- Top App Navigation -->
+    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-[#131313]/60 backdrop-blur-[30px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary" style="font-size: 28px;">storefront</span>
+            <h1 class="text-lg font-bold text-on-surface" id="headerTitle">MidMarket</h1>
+        </div>
+        <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
+            <svg class="w-5 h-5 mr-1.5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="#24A1DE"/>
+                <path d="M50 25 L56.5 39 L72 39.5 L60 48.5 L64.5 64 L50 55 L35.5 64 L40 48.5 L28 39.5 L43.5 39 Z" fill="white"/>
+            </svg>
+            <span class="font-mono-sm text-[12px] font-semibold text-white tracking-wide" id="globalBalance">0 GRAM</span>
+        </div>
+    </header>
+
+    <main class="pt-[90px] px-4 max-w-lg mx-auto z-10 relative">
+
+        <!-- ================= TAB 1: STORE ================= -->
+        <section id="tab-store" class="tab-content active">
+            <div class="mb-4 mt-4">
+                <p class="text-[11px] font-bold text-primary tracking-widest uppercase mb-1">Explore Collections</p>
+                <h2 class="text-xl font-bold text-on-surface">MidMarket Store</h2>
+            </div>
+
+            <!-- Custom Horizontal Image Dropdowns Filters -->
+            <div class="grid grid-cols-3 gap-2 mb-6">
+                <!-- Dropdown A: Gift Type -->
+                <div class="relative">
+                    <button onclick="toggleDropdown('giftTypeDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
+                        <span id="labelGiftType">Gift Type</span>
+                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    </button>
+                    <div id="giftTypeDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
+                        <button onclick="applyGiftTypeFilter('all', 'All Gifts')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Gifts</button>
+                        <div id="giftTypeOptions"></div>
+                    </div>
+                </div>
+
+                <!-- Dropdown B: Model -->
+                <div class="relative">
+                    <button onclick="toggleDropdown('modelDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
+                        <span id="labelModel">Model</span>
+                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    </button>
+                    <div id="modelDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
+                        <button onclick="applyModelFilter('all', 'All Models')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Models</button>
+                        <div id="modelOptions"></div>
+                    </div>
+                </div>
+
+                <!-- Dropdown C: Backdrop -->
+                <div class="relative">
+                    <button onclick="toggleDropdown('backdropDrop')" class="w-full bg-white/5 border border-white/10 text-[9px] text-white rounded-lg py-2.5 px-2 flex items-center justify-between">
+                        <span id="labelBackdrop">Backdrop</span>
+                        <span class="material-symbols-outlined text-xs">expand_more</span>
+                    </button>
+                    <div id="backdropDrop" class="hidden absolute right-0 w-44 mt-2 bg-[#131313] border border-white/10 rounded-lg shadow-2xl z-50 p-1 max-h-56 overflow-y-auto">
+                        <button onclick="applyBackdropFilter('all', 'All Colors')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-md flex items-center gap-2">All Backdrops</button>
+                        <div id="backdropOptions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4" id="storeGrid"></div>
+        </section>
+
+        <!-- ================= TAB 2: INVENTORY ================= -->
+        <section id="tab-inventory" class="tab-content">
+            <div class="frosted-border rounded-xl p-5 mb-6 mt-4 relative overflow-hidden text-xs">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-base">autorenew</span>
+                    Automated Telegram Escrow Deposits
+                </h3>
+                <p class="text-on-surface-variant leading-relaxed mb-2">Simply send your native Star Gift directly inside Telegram to our escrow userbot account:</p>
+                <div class="bg-black/40 rounded-lg p-2.5 flex justify-between items-center border border-white/5 mb-2">
+                    <span class="font-mono text-white text-[11px]" id="botEscrowName">@GiftRelayerBot</span>
+                    <span class="material-symbols-outlined text-[14px] cursor-pointer text-primary" onclick="navigator.clipboard.writeText('@GiftRelayerBot')">content_copy</span>
+                </div>
+                <p class="text-[10px] text-on-surface-variant opacity-60">No payment codes needed. The Relayer intercepts the sender ID dynamically.</p>
+            </div>
+
+            <div class="mb-4"><h2 class="text-base font-bold text-on-surface">Stored Escrow Inventory</h2></div>
+            <div class="grid grid-cols-2 gap-4" id="inventoryGrid"></div>
+        </section>
+
+        <!-- ================= TAB 3: SHOPPING QUEUE ================= -->
+        <section id="tab-cart" class="tab-content">
+            <div class="mb-6 mt-4"><h2 class="text-xl font-bold text-on-surface">Shopping Queue</h2></div>
+            <div class="space-y-4" id="cartItemsList"></div>
+            <div class="frosted-border rounded-xl p-5 mt-6 flex flex-col gap-4">
+                <div class="flex justify-between items-center text-sm"><span class="text-on-surface-variant">Total Cost</span><span class="font-bold text-white text-lg font-mono-sm" id="cartTotalPrice">0 GRAM</span></div>
+                <button class="glossy-button w-full py-4 rounded-lg font-bold text-white flex items-center justify-center gap-2" id="checkoutBtn">Buy Now</button>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: PROFILE & SETTINGS ================= -->
+        <section id="tab-profile" class="tab-content">
+            <div class="frosted-border rounded-xl p-5 mb-6 mt-4 text-center flex flex-col items-center">
+                <p class="text-xs text-on-surface-variant mb-2">My Ledger Balance</p>
+                <div class="flex items-center mb-4">
+                    <svg class="w-8 h-8 mr-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 5 L95 50 L50 95 L5 50 Z" fill="#24A1DE"/><path d="M50 25 L56.5 39 L72 39.5 L60 48.5 L64.5 64 L50 55 L35.5 64 L40 48.5 L28 39.5 L43.5 39 Z" fill="white"/></svg>
+                    <span class="text-2xl font-bold text-white font-mono-sm" id="profileBalance">0 GRAM</span>
+                </div>
+                <div class="flex gap-3 w-full">
+                    <button class="flex-1 py-2.5 rounded-lg bg-primary text-on-primary text-xs font-semibold" onclick="triggerTONDeposit()">On-Chain Deposit</button>
+                    <button class="flex-1 py-2.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold" onclick="alert('Withdraw triggered!')">Withdraw</button>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-sm font-bold text-on-surface mb-3 flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary">account_balance_wallet</span>TON Connect SDK</h3>
+                <div class="frosted-border rounded-xl p-4 flex flex-col gap-3">
+                    <div id="ton-connect-btn" class="flex justify-center"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= THE PREVIEW BOTTOM SHEET MODAL ================= -->
+    <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="detailModalOverlay">
+        <div class="absolute inset-0 bg-[#0e0e0e]/70 backdrop-blur-md opacity-0 transition-opacity duration-300" id="modalBg"></div>
+        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[32px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh]">
+            <div class="w-full py-4 flex justify-center cursor-pointer" id="closeHandle"><div class="drag-handle"></div></div>
+            <div class="w-full overflow-y-auto flex flex-col items-center no-scrollbar">
+                <!-- Compact presentation wrapper -->
+                <div class="relative w-36 h-36 flex items-center justify-center mt-1 rounded-2xl overflow-hidden shadow-inner" id="modalCanvasBox">
+                    <div class="modal-lottie-container" id="modalLottie"></div>
+                </div>
+                
+                <div class="text-center mt-4 space-y-1"><h2 class="text-lg font-bold text-white tracking-tight" id="modalTitle">-</h2><p class="text-[10px] text-on-surface-variant tracking-wider uppercase" id="modalNumber">-</p></div>
+                
+                <!-- Ultra Compact Single-Line Metadata (Prevents Lottie Canvas collapsing) -->
+                <div class="w-full mt-4 flex justify-around items-center border-y border-white/5 py-3 text-center text-[9px] tracking-wide text-on-surface-variant">
+                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoModel">-</span><span>Model</span></div>
+                    <div class="h-6 w-px bg-white/10"></div>
+                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoBackdrop">-</span><span>Backdrop</span></div>
+                    <div class="h-6 w-px bg-white/10"></div>
+                    <div><span class="block font-bold text-white text-[11px] font-mono-sm leading-tight" id="bentoSymbol">-</span><span>Symbol</span></div>
+                </div>
+
+                <div class="w-full mt-4">
+                    <div class="frosted-border rounded-xl p-3 flex items-center justify-between">
+                        <div class="flex flex-col"><span class="text-[10px] text-on-surface-variant mb-0.5">Price</span><span class="text-base font-bold text-white font-mono-sm" id="modalPrice">-</span></div>
+                        <div class="bg-primary-container/20 p-2.5 rounded-full"><span class="material-symbols-outlined text-primary-container text-lg">payments</span></div>
+                    </div>
+                </div>
+                <div class="w-full mt-5 flex flex-col gap-2.5">
+                    <div class="flex gap-2.5 w-full"><button class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 active:scale-95 duration-100 text-xs" id="modalBuyBtn">Buy Now</button><button class="frosted-border w-12 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100" id="modalCartIconBtn"><span class="material-symbols-outlined text-base">shopping_cart</span></button></div>
+                    <button class="frosted-border w-full py-3 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100 text-xs" id="modalOfferBtn">Make Offer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ESCROW SUCCESS CONFIRMATION MODAL ================= -->
+    <div class="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center p-4" id="confirmOverlay">
+        <div class="absolute inset-0 bg-[#0e0e0e]/85 backdrop-blur-md opacity-0 transition-opacity duration-300" id="confirmBg"></div>
+        <div class="glass-card w-full max-w-sm rounded-[24px] p-6 flex flex-col items-center text-center relative z-10 scale-95 opacity-0 transition-all duration-300" id="confirmCard">
+            <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4 text-primary"><span class="material-symbols-outlined text-2xl">check_circle</span></div>
+            <h3 class="text-sm font-bold text-white mb-1.5" id="confirmTitle">-</h3>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-6" id="confirmDesc">-</p>
+            <button class="glossy-button w-full py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100" id="confirmAckBtn">View Inventory</button>
+        </div>
+    </div>
+
+    <!-- TAB BAR (FLOATING TRANS_GLASS PILL) -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-around items-center px-4 py-2.5 liquid-glass rounded-full w-[fit-content] min-w-[300px]">
+        <button class="w-12 h-12 flex items-center justify-center text-primary bg-white/5 rounded-full transition-all duration-300" data-tab="store"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span></button>
+        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="inventory"><span class="material-symbols-outlined">auto_awesome_motion</span></button>
+        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300 relative" data-tab="cart"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full hidden" id="cartBadge"></span></button>
+        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="profile"><span class="material-symbols-outlined">account_circle</span></button>
+    </nav>
+
+    <!-- CORE LOGIC AND API FLOW -->
+    <script>
+        // --- CONFIGURE YOUR SECURE HTTPS DOMAIN PATH TO STOP MIXED CONTENT ERRORS ---
+        const API_BASE = "https://market.vasiliy.fun"; // Change to your SSL secured domain
+
+        // Read Dynamic identity variables using Telegram WebApp SDK
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        const initData = tg.initDataUnsafe;
+        const user = initData?.user || { id: 4590283, username: "TesterAccount" };
+        
+        const USER_TG_ID = user.id;
+        const USER_NAME = user.username || `User_${USER_TG_ID}`;
+
+        const PLATFORM_ESCROW_WALLET = "EQB7YourMarketEscrowWalletAddressHere_abc123";
+
+        let filterData = { gift_types: [], models: [], backdrops: [] };
+        let currentFilters = { model: 'all', backdrop: 'all', type: 'all' };
+        let activeAnimation = null;
+        let selectedGift = null;
+        let shoppingCart = [];
+
+        function toggleDropdown(id) {
+            document.querySelectorAll('[id$="Drop"]').forEach(el => {
+                if (el.id !== id) el.classList.add('hidden');
+            });
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        async function fetchDropdownFilters() {
+            try {
+                let r = await fetch(`${API_BASE}/api/filters`);
+                filterData = await r.json();
+
+                const typeContainer = document.getElementById('giftTypeOptions');
+                typeContainer.innerHTML = '';
+                filterData.gift_types.forEach(t => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${t.image_url}"> ${t.name}`;
+                    btn.onclick = () => applyGiftTypeFilter(t.id, t.name);
+                    typeContainer.appendChild(btn);
+                });
+
+                const modelContainer = document.getElementById('modelOptions');
+                modelContainer.innerHTML = '';
+                filterData.models.forEach(m => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${m.image_url}"> ${m.name}`;
+                    btn.onclick = () => applyModelFilter(m.name, m.name);
+                    modelContainer.appendChild(btn);
+                });
+
+                const backdropContainer = document.getElementById('backdropOptions');
+                backdropContainer.innerHTML = '';
+                filterData.backdrops.forEach(b => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded flex items-center gap-2";
+                    btn.innerHTML = `<div class="w-3.5 h-3.5 rounded-full" style="background: ${b.gradient}"></div> ${b.name}`;
+                    btn.onclick = () => applyBackdropFilter(b.name, b.name);
+                    backdropContainer.appendChild(btn);
+                });
+            } catch(e) {
+                console.error("Filter populating failure:", e);
+            }
+        }
+
+        function applyGiftTypeFilter(val, label) {
+            currentFilters.type = val;
+            document.getElementById('labelGiftType').textContent = label;
+            toggleDropdown('giftTypeDrop');
+            applyActiveFilters();
+        }
+        function applyModelFilter(val, label) {
+            currentFilters.model = val;
+            document.getElementById('labelModel').textContent = label;
+            toggleDropdown('modelDrop');
+            applyActiveFilters();
+        }
+        function applyBackdropFilter(val, label) {
+            currentFilters.backdrop = val;
+            document.getElementById('labelBackdrop').textContent = label;
+            toggleDropdown('backdropDrop');
+            applyActiveFilters();
+        }
+
+        async function applyActiveFilters() {
+            try {
+                let r = await fetch(`${API_BASE}/api/store`);
+                let listings = await r.json();
+
+                const filtered = listings.filter(item => {
+                    const mMatch = (currentFilters.model === 'all' || item.model.toLowerCase() === currentFilters.model.toLowerCase());
+                    const bMatch = (currentFilters.backdrop === 'all' || item.backdrop.toLowerCase() === currentFilters.backdrop.toLowerCase());
+                    const tMatch = (currentFilters.type === 'all' || item.slug.includes(currentFilters.type));
+                    return mMatch && bMatch && tMatch;
+                });
+                renderStoreGrid(filtered);
+            } catch(e) { console.error(e); }
+        }
+
+        async function bootUserSession() {
+            try {
+                await fetch(`${API_BASE}/api/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ telegram_id: USER_TG_ID, username: USER_NAME })
+                });
+                await syncUserProfile();
+            } catch(e) { console.error(e); }
+        }
+
+        async function syncUserProfile() {
+            try {
+                let r = await fetch(`${API_BASE}/api/profile/${USER_TG_ID}`);
+                let user = await r.json();
+                document.getElementById('globalBalance').textContent = `${user.balance_gram} GRAM`;
+                document.getElementById('profileBalance').textContent = `${user.balance_gram} GRAM`;
+            } catch(e) { console.error(e); }
+        }
+
+        function renderStoreGrid(listings) {
+            const grid = document.getElementById('storeGrid');
+            grid.innerHTML = '';
+            if (listings.length === 0) {
+                grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8">No active market listings matches.</p>`;
+                return;
+            }
+            listings.forEach(gift => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
+                card.innerHTML = `
+                    <div class="relative w-full aspect-square bg-surface-container-low overflow-hidden">
+                        <img class="w-full h-full object-cover" src="${gift.image_url}" alt="${gift.title}">
+                        <div class="absolute top-3 right-3 bg-primary/20 backdrop-blur-md h-6 px-2.5 rounded-full border border-white/10 flex items-center justify-center">
+                            <span class="font-mono-sm text-[10px] font-bold text-primary leading-none">${gift.serial_number}</span>
+                        </div>
+                    </div>
+                    <div class="p-3.5 flex flex-col gap-1">
+                        <div>
+                            <h3 class="text-xs font-bold text-on-surface truncate leading-tight">${gift.title}</h3>
+                            <span class="text-[9px] text-on-surface-variant block mt-0.5">Stars Gift</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-[12px] font-bold text-primary-container font-mono-sm">${gift.price} GRAM</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5 mt-2 w-full">
+                            <button onclick="event.stopPropagation(); buyNowInstant(${gift.id})" class="col-span-3 py-2 bg-primary text-on-primary font-bold text-[10px] rounded-lg active:scale-95 duration-100 flex items-center justify-center">Buy Now</button>
+                            <button onclick="event.stopPropagation(); toggleCartQueue(${gift.id})" class="col-span-1 py-2 bg-white/5 border border-white/10 text-primary hover:bg-white/10 rounded-lg active:scale-95 duration-100 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => openPreviewModal(gift));
+                grid.appendChild(card);
+            });
+        }
+
+        async function buyNowInstant(id) {
+            try {
+                let r = await fetch(`${API_BASE}/api/buy`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ gift_id: id, buyer_id: USER_TG_ID })
+                });
+                if (r.status === 400) {
+                    alert("Buy parameters rejected: check balance.");
+                    return;
+                }
+                await syncUserProfile();
+                await applyActiveFilters();
+                await syncInventory();
+                
+                triggerSuccessModal("Purchase Successful!", "Your collectible gift has been processed securely and saved inside your off-chain escrow account.", "Go to Escrow", "inventory");
+            } catch(e) { console.error(e); }
+        }
+
+        async function syncInventory() {
+            const grid = document.getElementById('inventoryGrid');
+            try {
+                let r = await fetch(`${API_BASE}/api/inventory/${USER_TG_ID}`);
+                let items = await r.json();
+                grid.innerHTML = '';
+                if (items.length === 0) {
+                    grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8">Your Relayer Escrow is empty.</p>`;
+                    return;
+                }
+                items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col';
+                    card.innerHTML = `
+                        <div class="relative w-full aspect-square bg-surface-container-low overflow-hidden">
+                            <img class="w-full h-full object-cover" src="${item.image_url}" alt="${item.title}">
+                            <div class="absolute top-3 right-3 bg-primary/20 backdrop-blur-md h-6 px-2.5 rounded-full border border-white/10 flex items-center justify-center">
+                                <span class="font-mono-sm text-[10px] font-bold text-primary leading-none">${item.serial_number}</span>
+                            </div>
+                        </div>
+                        <div class="p-3.5 flex flex-col gap-2" id="listing-box-${index}">
+                            <div>
+                                <h3 class="text-xs font-bold text-on-surface truncate leading-tight">${item.title}</h3>
+                                <span class="text-[9px] text-on-surface-variant block">Escrow Asset</span>
+                            </div>
+                            <div class="flex flex-col gap-1" id="listing-actions-${index}">
+                                <button class="w-full py-2 rounded-lg bg-primary text-on-primary text-[10px] font-bold active:scale-95 duration-100" onclick="showInlineListingInput(${index}, ${item.id})">List for Sale</button>
+                                <button class="w-full py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-semibold text-white active:scale-95 duration-100">Withdraw to TG</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch(e) { console.error(e); }
+        }
+
+        function showInlineListingInput(index, id) {
+            const actionContainer = document.getElementById(`listing-actions-${index}`);
+            actionContainer.innerHTML = `
+                <div class="flex flex-col gap-1.5 mt-1">
+                    <input id="list-price-${index}" type="number" placeholder="Price in G" class="w-full bg-black/40 text-[10px] border border-white/10 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-primary">
+                    <div class="flex gap-1.5">
+                        <button onclick="confirmListing(${index}, ${id})" class="flex-1 py-1.5 bg-primary text-on-primary font-bold text-[9px] rounded-lg active:scale-95 duration-100">Confirm</button>
+                        <button onclick="syncInventory()" class="py-1.5 px-2 bg-white/5 border border-white/10 text-[9px] rounded-lg text-white">Cancel</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function confirmListing(index, id) {
+            const price = parseInt(document.getElementById(`list-price-${index}`).value);
+            if (isNaN(price) || price <= 0) {
+                alert("Enter a valid price in GRAM.");
+                return;
+            }
+            try {
+                await fetch(`${API_BASE}/api/list`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ gift_id: id, price: price })
+                });
+                await syncInventory();
+                await applyActiveFilters();
+                triggerSuccessModal("Listing Complete", "Your gift listings have been broadcasted securely to the store catalog.", "Browse Store", "store");
+            } catch(e) { console.error(e); }
+        }
+
+        // --- VERIFIED CDN BINDING TON_CONNECT_UI VANILLA SCRIPT ---
+        let tonConnectUI;
+        document.addEventListener("DOMContentLoaded", () => {
+            tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: 'https://raw.githubusercontent.com/ton-connect/demo-dapp-with-react/master/public/tonconnect-manifest.json',
+                buttonRootId: 'ton-connect-btn'
+            });
+        });
+
+        async function triggerTONDeposit() {
+            if (!tonConnectUI.connected) {
+                alert("Please connect your wallet first.");
+                return;
+            }
+            const amountStr = prompt("Enter deposit amount in GRAM:");
+            const amount = parseInt(amountStr);
+            if (isNaN(amount) || amount <= 0) return;
+
+            const nanogramsValue = (amount * 1_000_000_000).toString();
+
+            const transactionObject = {
+                validUntil: Math.floor(Date.now() / 1000) + 360,
+                messages: [
+                    {
+                        address: PLATFORM_ESCROW_WALLET,
+                        amount: nanogramsValue,
+                        // Custom Payload: encodes user's real Telegram ID dynamically
+                        payload: btoa(USER_TG_ID.toString())
+                    }
+                ]
+            };
+
+            try {
+                await tonConnectUI.sendTransaction(transactionObject);
+                alert("Transaction broadcast on-chain! Confirming balance adjustment...");
+
+                let r = await fetch(`${API_BASE}/api/verify-deposit`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ telegram_id: USER_TG_ID, wallet_address: tonConnectUI.account.address })
+                });
+                let data = await r.json();
+                if (data.status === "success") {
+                    await syncUserProfile();
+                    triggerSuccessModal("Deposit Credited!", `Your profile balance was updated with +${data.credited_grams} GRAM.`, "Awesome", "profile");
+                } else {
+                    alert("Verify queue pending. It will credit automatically when validated.");
+                }
+            } catch(e) {
+                alert("Transaction expired or rejected.");
+            }
+        }
+
+        // Preview Sheet
+        const detailModalOverlay = document.getElementById('detailModalOverlay');
+        const sheet = document.querySelector('.bottom-sheet');
+        const modalLottie = document.getElementById('modalLottie');
+        const modalCanvasBox = document.getElementById('modalCanvasBox');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalNumber = document.getElementById('modalNumber');
+        const modalPrice = document.getElementById('modalPrice');
+        const bentoModel = document.getElementById('bentoModel');
+        const bentoBackdrop = document.getElementById('bentoBackdrop');
+        const bentoSymbol = document.getElementById('bentoSymbol');
+
+        function openPreviewModal(gift) {
+            selectedGift = gift;
+            closePreviewModal();
+
+            modalTitle.textContent = gift.title;
+            modalNumber.textContent = `No. ${gift.serial_number.replace('#', '')} of Collection`;
+            modalPrice.textContent = `${gift.price} GRAM`;
+            modalCanvasBox.style.background = gift.gradient;
+
+            bentoModel.textContent = gift.model || "3D Lottie";
+            bentoBackdrop.textContent = gift.backdrop || "Default Glow";
+            bentoSymbol.textContent = gift.symbol || "Stars";
+
+            detailModalOverlay.classList.remove('pointer-events-none');
+            detailModalOverlay.classList.add('pointer-events-auto');
+            document.getElementById('modalBg').classList.add('opacity-100');
+            sheet.classList.add('active');
+
+            const animationUrl = `https://nft.fragment.com/gift/${gift.slug}.lottie.json`;
+            activeAnimation = lottie.loadAnimation({
+                container: modalLottie,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: animationUrl
+            });
+        }
+
+        function closePreviewModal() {
+            document.getElementById('modalBg').classList.remove('opacity-100');
+            sheet.classList.remove('active');
+            detailModalOverlay.classList.remove('pointer-events-auto');
+            detailModalOverlay.classList.add('pointer-events-none');
+            if (activeAnimation) {
+                activeAnimation.destroy();
+                activeAnimation = null;
+            }
+        }
+
+        document.getElementById('modalBuyBtn').addEventListener('click', () => {
+            if (selectedGift) {
+                buyNowInstant(selectedGift.id);
+                closePreviewModal();
+            }
+        });
+
+        // Tab Switch Helper
+        const tabs = document.querySelectorAll('[data-tab]');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const headerTitle = document.getElementById('headerTitle');
+
+        function switchTab(target) {
+            tabs.forEach(t => {
+                t.classList.remove('text-primary', 'bg-white/5');
+                t.classList.add('text-on-surface-variant');
+            });
+            const activeTabBtn = document.querySelector(`[data-tab="${target}"]`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.remove('text-on-surface-variant');
+                activeTabBtn.classList.add('text-primary', 'bg-white/5');
+            }
+
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(`tab-${target}`).classList.add('active');
+            headerTitle.textContent = target === 'store' ? 'MidMarket' : target.charAt(0).toUpperCase() + target.slice(1);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.getAttribute('data-tab'));
+            });
+        });
+
+        function triggerSuccessModal(title, description, buttonText, tabTarget) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmDesc').textContent = description;
+            const ackBtn = document.getElementById('confirmAckBtn');
+            ackBtn.textContent = buttonText;
+            
+            const newAckBtn = ackBtn.cloneNode(true);
+            ackBtn.parentNode.replaceChild(newAckBtn, ackBtn);
+
+            newAckBtn.addEventListener('click', () => {
+                closeSuccessModal();
+                if (tabTarget) switchTab(tabTarget);
+            });
+
+            const overlay = document.getElementById('confirmOverlay');
+            const card = document.getElementById('confirmCard');
+            const bg = document.getElementById('confirmBg');
+
+            overlay.classList.remove('pointer-events-none');
+            overlay.classList.add('pointer-events-auto');
+            bg.classList.add('opacity-100');
+            card.classList.remove('scale-95', 'opacity-0');
+            card.classList.add('scale-100', 'opacity-100');
+        }
+
+        function closeSuccessModal() {
+            const overlay = document.getElementById('confirmOverlay');
+            const card = document.getElementById('confirmCard');
+            const bg = document.getElementById('confirmBg');
+
+            overlay.classList.remove('pointer-events-auto');
+            overlay.classList.add('pointer-events-none');
+            bg.classList.remove('opacity-100');
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+        }
+
+        document.getElementById('closeHandle').addEventListener('click', closePreviewModal);
+        document.getElementById('modalBg').addEventListener('click', closePreviewModal);
+
+        (async () => {
+            await bootUserSession();
+            await fetchDropdownFilters();
+            await applyActiveFilters();
+            await syncInventory();
+        })();
+    </script>
+</body>
+</html>
