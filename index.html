@@ -597,6 +597,7 @@
             }
             listings.forEach(gift => {
                 const isSelf = gift.owner_id === USER_TG_ID;
+                const escapedTitle = gift.title.replace(/'/g, "\\'");
                 const card = document.createElement('div');
                 card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
                 card.innerHTML = `
@@ -618,8 +619,8 @@
                             ${isSelf ? `
                                 <span class="col-span-4 text-[10px] py-2 bg-white/5 border border-white/5 text-center text-on-surface-variant rounded-lg font-bold">Your Listed Item</span>
                             ` : `
-                                <button onclick="event.stopPropagation(); triggerBuyConfirmation(${gift.id}, '${gift.title}', ${gift.price})" class="col-span-3 py-2 bg-primary text-black font-extrabold text-[10px] rounded-lg active:scale-95 duration-100 flex items-center justify-center">Buy</button>
-                                <button onclick="event.stopPropagation(); addToCartQueue(${gift.id}, '${gift.title}', ${gift.price}, '${getGiftImageUrl(gift)}')" class="col-span-1 py-2 bg-white/5 border border-white/10 text-primary hover:bg-white/10 rounded-lg active:scale-95 duration-100 flex items-center justify-center">
+                                <button onclick="event.stopPropagation(); triggerBuyConfirmation(${gift.id}, '${escapedTitle}', ${gift.price})" class="col-span-3 py-2 bg-primary text-black font-extrabold text-[10px] rounded-lg active:scale-95 duration-100 flex items-center justify-center">Buy</button>
+                                <button onclick="event.stopPropagation(); addToCartQueue(${gift.id}, '${escapedTitle}', ${gift.price}, '${getGiftImageUrl(gift)}')" class="col-span-1 py-2 bg-white/5 border border-white/10 text-primary hover:bg-white/10 rounded-lg active:scale-95 duration-100 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-sm">shopping_cart</span>
                                 </button>
                             `}
@@ -765,6 +766,7 @@
 
                 renderedItems.forEach(item => {
                     const listed = !!item.is_listed;
+                    const escapedTitle = item.title.replace(/'/g, "\\'");
                     const card = document.createElement('div');
                     card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
                     card.innerHTML = `
@@ -781,9 +783,9 @@
                             </div>
                             <div class="flex flex-col gap-1">
                                 ${!listed ? `
-                                    <button class="w-full py-1.5 rounded-lg bg-primary text-black text-[10px] font-extrabold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${item.title}', false)">List Asset</button>
+                                    <button class="w-full py-1.5 rounded-lg bg-primary text-black text-[10px] font-extrabold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${escapedTitle}', false)">List Asset</button>
                                 ` : `
-                                    <button class="w-full py-1.5 rounded-lg bg-white/10 border border-white/10 text-white text-[10px] font-bold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${item.title}', true)">Update Price</button>
+                                    <button class="w-full py-1.5 rounded-lg bg-white/10 border border-white/10 text-white text-[10px] font-bold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${escapedTitle}', true)">Update Price</button>
                                 `}
                             </div>
                         </div>
@@ -1025,7 +1027,7 @@
 
         // Preview Sheet Modal Controls
         const detailModalOverlay = document.getElementById('detailModalOverlay');
-        const sheet = document.querySelector('.bottom-sheet');
+        const sheet = document.querySelector('#detailModalOverlay .bottom-sheet');
         const modalLottie = document.getElementById('modalLottie');
         const modalCanvasBox = document.getElementById('modalCanvasBox');
         const modalTitle = document.getElementById('modalTitle');
@@ -1065,16 +1067,16 @@
                     modalPrice.textContent = `${gift.price} GRAM`;
                     modalActionsBox.innerHTML = `
                         <div class="flex gap-2.5 w-full">
-                            <button onclick="triggerPriceInputModal(${gift.id}, '${gift.title}', true)" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">Update Price</button>
-                            <button onclick="triggerCancelListingConfirmation(${gift.id}, '${gift.title}')" class="frosted-border flex-1 py-3.5 rounded-xl font-bold text-red-400 text-xs active:scale-95 duration-100">Cancel List</button>
+                            <button onclick="triggerPriceInputModal(selectedGift.id, selectedGift.title, true)" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">Update Price</button>
+                            <button onclick="triggerCancelListingConfirmation(selectedGift.id, selectedGift.title)" class="frosted-border flex-1 py-3.5 rounded-xl font-bold text-red-400 text-xs active:scale-95 duration-100">Cancel List</button>
                         </div>
                     `;
                 } else {
                     priceSection.classList.add('hidden');
                     modalActionsBox.innerHTML = `
                         <div class="flex gap-2.5 w-full">
-                            <button onclick="triggerPriceInputModal(${gift.id}, '${gift.title}', false)" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">List Asset</button>
-                            <button onclick="simulateWithdrawal(${gift.id})" class="frosted-border flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">Withdraw to TG</button>
+                            <button onclick="triggerPriceInputModal(selectedGift.id, selectedGift.title, false)" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">List Asset</button>
+                            <button onclick="simulateWithdrawal(selectedGift.id)" class="frosted-border flex-1 py-3.5 rounded-xl font-bold text-white text-xs active:scale-95 duration-100">Withdraw to TG</button>
                         </div>
                     `;
                 }
@@ -1084,8 +1086,8 @@
                 modalPrice.textContent = `${gift.price} GRAM`;
                 modalActionsBox.innerHTML = `
                     <div class="flex gap-2.5 w-full">
-                        <button onclick="triggerBuyConfirmation(${gift.id}, '${gift.title}', ${gift.price})" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 active:scale-95 duration-100 text-xs">Buy Now</button>
-                        <button onclick="addToCartQueue(${gift.id}, '${gift.title}', ${gift.price}, '${getGiftImageUrl(gift)}')" class="frosted-border w-12 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+                        <button onclick="triggerBuyConfirmation(selectedGift.id, selectedGift.title, selectedGift.price)" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 active:scale-95 duration-100 text-xs">Buy Now</button>
+                        <button onclick="addToCartQueue(selectedGift.id, selectedGift.title, selectedGift.price, getGiftImageUrl(selectedGift))" class="frosted-border w-12 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
                     </div>
                     <button class="frosted-border w-full py-3 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100 text-xs" onclick="openOfferModal()">Make Offer</button>
                 `;
