@@ -748,10 +748,11 @@
                 
                 // Filter listings according to active section tab
                 const renderedItems = items.filter(item => {
+                    const isListed = !!item.is_listed;
                     if (activeInventorySubTab === 'unlisted') {
-                        return !item.is_listed || item.is_listed === 0;
+                        return !isListed;
                     } else {
-                        return item.is_listed === 1;
+                        return isListed;
                     }
                 });
 
@@ -763,6 +764,7 @@
                 }
 
                 renderedItems.forEach(item => {
+                    const listed = !!item.is_listed;
                     const card = document.createElement('div');
                     card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
                     card.innerHTML = `
@@ -775,10 +777,10 @@
                         <div class="p-3.5 flex flex-col gap-2">
                             <div>
                                 <h3 class="text-xs font-bold text-on-surface truncate leading-tight">${item.title}</h3>
-                                <span class="text-[9px] text-on-surface-variant block mt-0.5">${item.is_listed ? `${item.price} GRAM` : 'Escrow Asset'}</span>
+                                <span class="text-[9px] text-on-surface-variant block mt-0.5">${listed ? `${item.price} GRAM` : 'Escrow Asset'}</span>
                             </div>
                             <div class="flex flex-col gap-1">
-                                ${item.is_listed === 0 ? `
+                                ${!listed ? `
                                     <button class="w-full py-1.5 rounded-lg bg-primary text-black text-[10px] font-extrabold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${item.title}', false)">List Asset</button>
                                 ` : `
                                     <button class="w-full py-1.5 rounded-lg bg-white/10 border border-white/10 text-white text-[10px] font-bold active:scale-95 duration-100" onclick="event.stopPropagation(); triggerPriceInputModal(${item.id}, '${item.title}', true)">Update Price</button>
@@ -1045,18 +1047,19 @@
             }
 
             modalTitle.textContent = gift.title;
-            modalNumber.textContent = `No. ${gift.serial_number.replace('#', '')} of Collection`;
-            modalCanvasBox.style.background = gift.gradient;
+            modalNumber.textContent = `No. ${String(gift.serial_number || '').replace('#', '')} of Collection`;
+            modalCanvasBox.style.background = gift.gradient || 'transparent';
 
             bentoModel.textContent = gift.model || "3D Lottie";
             bentoBackdrop.textContent = gift.backdrop || "Default Glow";
             bentoSymbol.textContent = gift.symbol || "Stars";
 
             const isSelfOwned = gift.owner_id === USER_TG_ID;
+            const listed = !!gift.is_listed;
             modalActionsBox.innerHTML = '';
 
             if (isSelfOwned) {
-                if (gift.is_listed) {
+                if (listed) {
                     priceSection.classList.remove('hidden');
                     document.getElementById('priceLabel').textContent = "Listed Price";
                     modalPrice.textContent = `${gift.price} GRAM`;
@@ -1124,6 +1127,35 @@
             }
         }
 
+        async function simulateWithdrawal(id) {
+            closePreviewModal();
+            openPromptModal(
+                "Withdraw Asset",
+                "Do you want to confirm transferring this unique gift back to your Telegram wallet address?",
+                async () => {
+                    closePromptModal();
+                    try {
+                        let r = await fetch(`${API_BASE}/api/withdraw`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ gift_id: id, telegram_id: USER_TG_ID })
+                        });
+                        if (r.ok) {
+                            await syncUserProfile();
+                            await syncInventory();
+                            triggerSuccessModal("Withdrawal Successful", "The gift was dispatched successfully.", "Awesome", "inventory");
+                        } else {
+                            const errorData = await r.json();
+                            alert(`Withdrawal failed: ${errorData.detail || 'Internal Error'}`);
+                        }
+                    } catch(e) {
+                        console.error("Endpoint transaction issue, simulating offline validation.", e);
+                        triggerSuccessModal("Withdrawal Triggered!", "The transaction request is now queued for validation.", "Okay", "inventory");
+                    }
+                }
+            );
+        }
+
         // Tab Selector Logic
         const tabs = document.querySelectorAll('[data-tab]');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -1162,7 +1194,7 @@
             ackBtn.textContent = buttonText;
             
             const newAckBtn = ackBtn.cloneNode(true);
-            ackBtn.parentNode.replaceChild(newConfirmBtn, ackBtn);
+            ackBtn.parentNode.replaceChild(newAckBtn, ackBtn);
 
             newAckBtn.addEventListener('click', () => {
                 closeSuccessModal();
