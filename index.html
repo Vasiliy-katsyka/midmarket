@@ -92,8 +92,8 @@
         <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <!-- Generous top spacing dynamically calculates notches and dynamic islands (pushed down to 75px) -->
-    <header class="fixed top-0 left-0 right-0 w-full z-40 flex justify-between items-center px-6 pb-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]" style="padding-top: calc(var(--tg-safe-area-inset-top, 0px) + env(safe-area-inset-top, 0px) + 75px);">
+    <!-- Generates safe area only within the header component (down to 50px offset) -->
+    <header class="fixed top-0 left-0 right-0 w-full z-40 flex justify-between items-center px-6 pb-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]" style="padding-top: calc(var(--tg-safe-area-inset-top, 0px) + env(safe-area-inset-top, 0px) + 50px);">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-size: 26px;">storefront</span>
             <h1 class="text-md font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
@@ -107,8 +107,8 @@
         </div>
     </header>
 
-    <!-- Main viewport content starts below safe area gap (155px offset) -->
-    <main class="px-4 max-w-lg mx-auto z-10 relative" style="padding-top: calc(var(--tg-safe-area-inset-top, 0px) + env(safe-area-inset-top, 0px) + 155px);">
+    <!-- Clear, static vertical offset starts content immediately below the safe header (no dynamic safe padding on main) -->
+    <main class="pt-[115px] px-4 max-w-lg mx-auto z-10 relative">
 
         <!-- ================= TAB 1: STORE ================= -->
         <section id="tab-store" class="tab-content active">
@@ -190,11 +190,10 @@
         <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-5 shadow-2xl relative z-10 h-[85vh] pointer-events-auto">
             <div class="w-full py-4 flex justify-center cursor-pointer" onclick="closeFilterSelectorWindow()"><div class="drag-handle"></div></div>
             
-            <!-- Category Sliding Segment Navigation Bar -->
             <div class="w-full flex bg-white/5 p-1 rounded-xl gap-1 mb-4">
                 <button onclick="switchFilterCategory('types')" id="seg-types" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-primary bg-white/10 transition-all">Types</button>
                 <button onclick="switchFilterCategory('models')" id="seg-models" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Models</button>
-                <button onclick="switchFilterCategory('backdrops')" id="seg-backdrops" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Backdrops</button>
+                <button onclick="switchFilterCategory('backdrops')" id="seg-backdrops" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Colors</button>
                 <button onclick="switchFilterCategory('patterns')" id="seg-patterns" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Patterns</button>
             </div>
 
@@ -203,14 +202,13 @@
                 <span class="material-symbols-outlined text-sm absolute right-3.5 top-3.5 text-on-surface-variant">search</span>
             </div>
 
-            <!-- Dynamic Body Content -->
             <div class="w-full overflow-y-auto flex-1 pr-1 pb-16" id="filterSelectionBody">
-                <div id="categoryGrid" class="grid grid-cols-2 gap-2">
+                <!-- Small, tight 3-column category grid prevents large unproportional buttons -->
+                <div id="categoryGrid" class="grid grid-cols-3 gap-2">
                     <!-- Segment items rendered dynamically -->
                 </div>
             </div>
 
-            <!-- Sticky Apply Button on modal bottom prevents sudden screen closes -->
             <div class="absolute bottom-5 left-5 right-5 z-20">
                 <button onclick="closeFilterSelectorWindow()" class="glossy-button w-full py-3.5 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 active:scale-95 duration-100 shadow-xl">
                     <span class="material-symbols-outlined text-sm">done</span>
@@ -311,7 +309,9 @@
 
         const PLATFORM_ESCROW_WALLET = "UQAAUfBRen6rPRg_BPoheYBWIijXcI3F90s2rflQiAmzrFvb";
 
-        let currentFilters = { model: 'all', backdrop: 'all', type: 'all', pattern: 'all' };
+        // Multi-select array storage architecture
+        let currentFilters = { model: [], backdrop: [], type: [], pattern: [] };
+        
         let activeAnimation = null;
         let selectedGift = null;
         let shoppingCart = [];
@@ -383,67 +383,67 @@
             grid.innerHTML = '';
 
             if (activeFilterCategory === "types") {
-                const isAllSel = currentFilters.type === 'all';
+                const isAllSel = currentFilters.type.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectGiftType('all', 'All Gifts')" class="p-3.5 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary' : 'text-white'}">
-                        All Gifts
+                    <button onclick="selectGiftType('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                        All
                     </button>
                 `;
                 filterData.gift_types.filter(t => t.name.toLowerCase().includes(query)).forEach(t => {
-                    const isSel = currentFilters.type == t.id;
+                    const isSel = currentFilters.type.includes(t.id);
                     grid.innerHTML += `
-                        <button onclick="selectGiftType('${t.id}', '${t.name}')" class="p-3.5 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
-                            <img class="w-4.5 h-4.5 object-contain rounded" src="${t.image_url}">${t.name}
+                        <button onclick="selectGiftType('${t.id}', '${t.name}')" class="p-2 border rounded-xl flex items-center gap-1.5 text-left text-[10px] font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                            <img class="w-3.5 h-3.5 object-contain rounded shrink-0" src="${t.image_url}">${t.name}
                         </button>
                     `;
                 });
             }
 
             else if (activeFilterCategory === "models") {
-                const isAllSel = currentFilters.model === 'all';
+                const isAllSel = currentFilters.model.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectModel('all')" class="p-3.5 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary' : 'text-white'}">
-                        All Models
+                    <button onclick="selectModel('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                        All
                     </button>
                 `;
                 filterData.models.filter(m => m.name.toLowerCase().includes(query)).forEach(m => {
-                    const isSel = currentFilters.model === m.name;
+                    const isSel = currentFilters.model.includes(m.name);
                     grid.innerHTML += `
-                        <button onclick="selectModel('${m.name}')" class="p-3.5 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
-                            <img class="w-4.5 h-4.5 object-contain rounded" src="${m.image_url}">${m.name}
+                        <button onclick="selectModel('${m.name}')" class="p-2 border rounded-xl flex items-center gap-1.5 text-left text-[10px] font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                            <img class="w-3.5 h-3.5 object-contain rounded shrink-0" src="${m.image_url}">${m.name}
                         </button>
                     `;
                 });
             }
 
             else if (activeFilterCategory === "backdrops") {
-                const isAllSel = currentFilters.backdrop === 'all';
+                const isAllSel = currentFilters.backdrop.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectBackdrop('all')" class="p-3.5 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary' : 'text-white'}">
-                        All Colors
+                    <button onclick="selectBackdrop('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                        All
                     </button>
                 `;
                 filterData.backdrops.filter(b => b.name.toLowerCase().includes(query)).forEach(b => {
-                    const isSel = currentFilters.backdrop === b.name;
+                    const isSel = currentFilters.backdrop.includes(b.name);
                     grid.innerHTML += `
-                        <button onclick="selectBackdrop('${b.name}')" class="p-3.5 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
-                            <div class="w-4 h-4 rounded-full shrink-0" style="background: ${b.gradient}"></div>${b.name}
+                        <button onclick="selectBackdrop('${b.name}')" class="p-2 border rounded-xl flex items-center gap-1.5 text-left text-[10px] font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                            <div class="w-3 h-3 rounded-full shrink-0" style="background: ${b.gradient}"></div>${b.name}
                         </button>
                     `;
                 });
             }
 
             else if (activeFilterCategory === "patterns") {
-                const isAllSel = currentFilters.pattern === 'all';
+                const isAllSel = currentFilters.pattern.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectPattern('all')" class="p-3.5 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary' : 'text-white'}">
-                        All Patterns
+                    <button onclick="selectPattern('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                        All
                     </button>
                 `;
                 PRESET_PATTERNS.filter(p => p.name.toLowerCase().includes(query)).forEach(p => {
-                    const isSel = currentFilters.pattern === p.name;
+                    const isSel = currentFilters.pattern.includes(p.name);
                     grid.innerHTML += `
-                        <button onclick="selectPattern('${p.name}')" class="p-3.5 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
+                        <button onclick="selectPattern('${p.name}')" class="p-2 border rounded-xl text-left text-[10px] font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
                             ${p.name}
                         </button>
                     `;
@@ -451,25 +451,64 @@
             }
         }
 
-        // Selections do NOT close modal, allowing seamless multi-category setup
+        // Toggles elements in/out of selection arrays without dismissing modal
         function selectGiftType(id, name) {
-            currentFilters.type = id;
-            fetchDropdownFilters(name !== "All Gifts" ? name : "Artisan Brick");
+            if (id === 'all') {
+                currentFilters.type = [];
+            } else {
+                const index = currentFilters.type.indexOf(id);
+                if (index > -1) {
+                    currentFilters.type.splice(index, 1);
+                } else {
+                    currentFilters.type.push(id);
+                }
+            }
+            fetchDropdownFilters(name && name !== "All Gifts" ? name : "Artisan Brick");
             applyActiveFilters();
             performSearchFilter();
         }
+
         function selectModel(name) {
-            currentFilters.model = name;
+            if (name === 'all') {
+                currentFilters.model = [];
+            } else {
+                const index = currentFilters.model.indexOf(name);
+                if (index > -1) {
+                    currentFilters.model.splice(index, 1);
+                } else {
+                    currentFilters.model.push(name);
+                }
+            }
             applyActiveFilters();
             performSearchFilter();
         }
+
         function selectBackdrop(name) {
-            currentFilters.backdrop = name;
+            if (name === 'all') {
+                currentFilters.backdrop = [];
+            } else {
+                const index = currentFilters.backdrop.indexOf(name);
+                if (index > -1) {
+                    currentFilters.backdrop.splice(index, 1);
+                } else {
+                    currentFilters.backdrop.push(name);
+                }
+            }
             applyActiveFilters();
             performSearchFilter();
         }
+
         function selectPattern(name) {
-            currentFilters.pattern = name;
+            if (name === 'all') {
+                currentFilters.pattern = [];
+            } else {
+                const index = currentFilters.pattern.indexOf(name);
+                if (index > -1) {
+                    currentFilters.pattern.splice(index, 1);
+                } else {
+                    currentFilters.pattern.push(name);
+                }
+            }
             applyActiveFilters();
             performSearchFilter();
         }
@@ -490,10 +529,10 @@
                 let listings = await r.json();
 
                 const filtered = listings.filter(item => {
-                    const mMatch = (currentFilters.model === 'all' || item.model.toLowerCase() === currentFilters.model.toLowerCase());
-                    const bMatch = (currentFilters.backdrop === 'all' || item.backdrop.toLowerCase() === currentFilters.backdrop.toLowerCase());
-                    const tMatch = (currentFilters.type === 'all' || item.slug.includes(currentFilters.type));
-                    const pMatch = (currentFilters.pattern === 'all' || (item.symbol && item.symbol.toLowerCase() === currentFilters.pattern.toLowerCase()));
+                    const mMatch = (currentFilters.model.length === 0 || currentFilters.model.includes(item.model));
+                    const bMatch = (currentFilters.backdrop.length === 0 || currentFilters.backdrop.includes(item.backdrop));
+                    const tMatch = (currentFilters.type.length === 0 || currentFilters.type.some(id => item.slug.includes(id)));
+                    const pMatch = (currentFilters.pattern.length === 0 || (item.symbol && currentFilters.pattern.includes(item.symbol)));
                     return mMatch && bMatch && tMatch && pMatch;
                 });
                 renderStoreGrid(filtered);
