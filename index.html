@@ -5,12 +5,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>MidMarket - Telegram Collectibles</title>
     
-    <!-- Telegram Web App SDK Integration -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <!-- TON Connect UI Script -->
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -42,13 +38,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient background graphics */
         .liquid-gradient {
             background: radial-gradient(circle at 10% 20%, rgba(10, 132, 255, 0.1) 0%, transparent 50%),
                         radial-gradient(circle at 90% 80%, rgba(235, 106, 18, 0.06) 0%, transparent 50%), #0e0e0e;
         }
 
-        /* Glassmorphic variables */
         .liquid-glass {
             background: rgba(25, 25, 25, 0.4);
             backdrop-filter: blur(45px);
@@ -73,7 +67,6 @@
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* Bottom navigation capsule styling */
         .navigation-pill {
             background: rgba(20, 20, 20, 0.55);
             backdrop-filter: blur(40px);
@@ -98,13 +91,12 @@
         }
         .animate-float { animation: float 4s ease-in-out infinite; }
         
-        /* Interactive dynamic dropdown options container */
         .custom-dropdown-menu {
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
         }
         .custom-dropdown-menu::-webkit-scrollbar { width: 4px; }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 999px; }
 
         #ton-connect-btn button {
             background: rgba(255, 255, 255, 0.05) !important;
@@ -119,13 +111,11 @@
 </head>
 <body class="liquid-gradient min-h-screen pb-36">
 
-    <!-- Atmospheric Glow Nodes (Design depth) -->
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute top-1/4 left-1/10 w-[450px] h-[450px] bg-primary/10 blur-[130px] rounded-full"></div>
         <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <!-- Header Navigation -->
     <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-size: 28px;">storefront</span>
@@ -149,7 +139,6 @@
                 <h2 class="text-2xl font-bold text-on-surface tracking-tight">MidMarket Store</h2>
             </div>
 
-            <!-- Highly styled dynamic selector dropdowns -->
             <div class="grid grid-cols-3 gap-2.5 mb-6">
                 <!-- Selector A: Gift Type -->
                 <div class="relative">
@@ -263,14 +252,12 @@
             <div class="w-full py-4 flex justify-center cursor-pointer" id="closeHandle"><div class="drag-handle"></div></div>
             <div class="w-full overflow-y-auto flex flex-col items-center no-scrollbar">
                 
-                <!-- Presentation box -->
                 <div class="relative w-36 h-36 flex items-center justify-center mt-1 rounded-2xl overflow-hidden shadow-inner border border-white/5" id="modalCanvasBox">
                     <div class="modal-lottie-container" id="modalLottie"></div>
                 </div>
                 
                 <div class="text-center mt-4 space-y-0.5"><h2 class="text-lg font-bold text-white tracking-tight" id="modalTitle">-</h2><p class="text-[10px] text-on-surface-variant font-mono tracking-wider uppercase" id="modalNumber">-</p></div>
                 
-                <!-- Highly Compact Metadata Row (Prevents layout shifting & collapsing) -->
                 <div class="w-full mt-4 flex justify-around items-center border-y border-white/5 py-3 text-center text-[9px] tracking-wide text-on-surface-variant">
                     <div><span class="block font-bold text-white text-[11px] leading-tight" id="bentoModel">-</span><span>Model</span></div>
                     <div class="h-6 w-px bg-white/10"></div>
@@ -314,10 +301,8 @@
 
     <!-- CORE LOGIC AND API FLOW -->
     <script>
-        // --- CONFIGURE YOUR SECURE HTTPS DOMAIN PATH TO STOP MIXED CONTENT ERRORS ---
         const API_BASE = "https://market.vasiliy.fun:8443";
 
-        // Read Dynamic identity variables using Telegram WebApp SDK
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -330,28 +315,35 @@
 
         const PLATFORM_ESCROW_WALLET = "UQAAUfBRen6rPRg_BPoheYBWIijXcI3F90s2rflQiAmzrFvb";
 
-        let currentActiveFilters = { model: 'all', backdrop: 'all', type: 'all' };
+        let currentFilters = { model: 'all', backdrop: 'all', type: 'all' };
         let activeAnimation = null;
         let selectedGift = null;
         let shoppingCart = [];
 
-        // Interactive Dropdowns Controls
         function toggleFilterMenu(id) {
             const el = document.getElementById(id);
             el.classList.toggle('hidden');
         }
 
-        async function fetchDropdownFilters() {
+        // Returns dynamic URL pointing to nft.fragment.com if the item is a unique NFT
+        function getGiftImageUrl(gift) {
+            if (gift.slug && !gift.slug.startsWith("standard-") && !gift.slug.startsWith("mock-gift-")) {
+                return `https://nft.fragment.com/gift/${gift.slug}.webp`;
+            }
+            return gift.image_url;
+        }
+
+        async function fetchDropdownFilters(giftTypeName = "Artisan Brick") {
             try {
-                let r = await fetch(`${API_BASE}/api/filters`);
-                filterData = await r.json();
+                let r = await fetch(`${API_BASE}/api/filters?gift_type=${encodeURIComponent(giftTypeName)}`);
+                let filterData = await r.json();
 
                 const typeContainer = document.getElementById('giftTypeOptions');
                 typeContainer.innerHTML = '';
                 filterData.gift_types.forEach(t => {
                     const btn = document.createElement('button');
                     btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
-                    btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${t.image_url}"> ${t.name}`;
+                    btn.innerHTML = `<img class="w-4 h-4 object-contain rounded" src="${t.image_url}"> ${t.name}`;
                     btn.onclick = () => applyGiftTypeFilter(t.id, t.name);
                     typeContainer.appendChild(btn);
                 });
@@ -361,7 +353,7 @@
                 filterData.models.forEach(m => {
                     const btn = document.createElement('button');
                     btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
-                    btn.innerHTML = `<img class="w-4 h-4 object-contain" src="${m.image_url}"> ${m.name}`;
+                    btn.innerHTML = `<img class="w-4 h-4 object-contain rounded" src="${m.image_url}"> ${m.name}`;
                     btn.onclick = () => applyModelFilter(m.name, m.name);
                     modelContainer.appendChild(btn);
                 });
@@ -384,14 +376,19 @@
             currentFilters.type = val;
             document.getElementById('labelGiftType').textContent = label;
             toggleFilterMenu('giftTypeDrop');
+            
+            // Fetch dynamically updated models/backdrops based on the selected gift type
+            fetchDropdownFilters(label);
             applyActiveFilters();
         }
+        
         function applyModelFilter(val, label) {
             currentFilters.model = val;
             document.getElementById('labelModel').textContent = label;
             toggleFilterMenu('modelDrop');
             applyActiveFilters();
         }
+        
         function applyBackdropFilter(val, label) {
             currentFilters.backdrop = val;
             document.getElementById('labelBackdrop').textContent = label;
@@ -446,7 +443,7 @@
                 card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
                 card.innerHTML = `
                     <div class="relative w-full aspect-square bg-surface-container-low overflow-hidden">
-                        <img class="w-full h-full object-cover" src="${gift.image_url}" alt="${gift.title}">
+                        <img class="w-full h-full object-cover" src="${getGiftImageUrl(gift)}" alt="${gift.title}">
                         <div class="absolute top-3 right-3 bg-primary/20 backdrop-blur-md h-6 px-2.5 rounded-full border border-white/10 flex items-center justify-center">
                             <span class="font-mono-sm text-[10px] font-bold text-primary leading-none">${gift.serial_number}</span>
                         </div>
@@ -512,7 +509,7 @@
                     card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col';
                     card.innerHTML = `
                         <div class="relative w-full aspect-square bg-surface-container-low overflow-hidden">
-                            <img class="w-full h-full object-cover" src="${item.image_url}" alt="${item.title}">
+                            <img class="w-full h-full object-cover" src="${getGiftImageUrl(item)}" alt="${item.title}">
                             <div class="absolute top-3 right-3 bg-primary/20 backdrop-blur-md h-6 px-2.5 rounded-full border border-white/10 flex items-center justify-center">
                                 <span class="font-mono-sm text-[10px] font-bold text-primary leading-none">${item.serial_number}</span>
                             </div>
@@ -566,7 +563,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // --- VERIFIED CDN BINDING TON_CONNECT_UI VANILLA SCRIPT ---
         let tonConnectUI;
         document.addEventListener("DOMContentLoaded", () => {
             tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -592,7 +588,6 @@
                     {
                         address: PLATFORM_ESCROW_WALLET,
                         amount: nanogramsValue,
-                        // Encoding your user's native Telegram ID string directly as message payload
                         payload: btoa(USER_TG_ID.toString())
                     }
                 ]
@@ -649,14 +644,21 @@
             document.getElementById('modalBg').classList.add('opacity-100');
             sheet.classList.add('active');
 
-            const animationUrl = `https://nft.fragment.com/gift/${gift.slug}.lottie.json`;
-            activeAnimation = lottie.loadAnimation({
-                container: modalLottie,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                path: animationUrl
-            });
+            const isUnique = gift.slug && !gift.slug.startsWith("standard-") && !gift.slug.startsWith("mock-gift-");
+            if (isUnique) {
+                modalLottie.innerHTML = '';
+                const animationUrl = `https://nft.fragment.com/gift/${gift.slug}.lottie.json`;
+                activeAnimation = lottie.loadAnimation({
+                    container: modalLottie,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: animationUrl
+                });
+            } else {
+                // Safely render fallback static imagery inside modal presentation container for standard types
+                modalLottie.innerHTML = `<img class="w-24 h-24 object-contain" src="${getGiftImageUrl(gift)}" alt="${gift.title}">`;
+            }
         }
 
         function closePreviewModal() {
