@@ -2,8 +2,8 @@
 <html class="dark" lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>MidMarket - Telegram Collectibles</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>MidMarket</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
@@ -43,83 +43,65 @@
                         radial-gradient(circle at 90% 80%, rgba(235, 106, 18, 0.06) 0%, transparent 50%), #0e0e0e;
         }
 
+        /* Highly refined iOS Liquid Glass stylings */
         .liquid-glass {
-            background: rgba(25, 25, 25, 0.4);
-            backdrop-filter: blur(45px);
-            -webkit-backdrop-filter: blur(45px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            background: rgba(30, 30, 30, 0.55);
+            backdrop-filter: blur(40px) saturate(210%);
+            -webkit-backdrop-filter: blur(40px) saturate(210%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.75), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.22);
         }
 
         .glass-card {
-            background: rgba(25, 25, 25, 0.35);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 0.5px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 15px 30px rgba(0, 0, 0, 0.4);
-            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+            background: rgba(25, 25, 25, 0.45);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 0.5px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 10px 25px rgba(0, 0, 0, 0.55);
+            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
         }
 
         .glass-card:active { transform: scale(0.97); }
-        .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
 
         .navigation-pill {
-            background: rgba(20, 20, 20, 0.55);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            background: rgba(18, 18, 18, 0.65);
+            backdrop-filter: blur(35px) saturate(190%);
+            -webkit-backdrop-filter: blur(35px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
-        .bottom-sheet { transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bottom-sheet { transform: translateY(100%); transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
         .bottom-sheet.active { transform: translateY(0); }
-        .glossy-button { background: #0A84FF; box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2); }
-        .frosted-border { border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.02); }
-        .drag-handle { width: 36px; height: 5px; background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        .glossy-button { background: #0A84FF; box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.25); }
+        .frosted-border { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); }
+        .drag-handle { width: 36px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 999px; }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float { animation: float 4s ease-in-out infinite; }
-        
-        .custom-dropdown-menu {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
-        }
         .custom-dropdown-menu::-webkit-scrollbar { width: 4px; }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 999px; }
-
-        #ton-connect-btn button {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            color: #ffffff !important;
-            border-radius: 12px !important;
-            font-size: 13px !important;
-            font-weight: 600 !important;
-            padding: 10px 18px !important;
+        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        
+        /* 50px Top Header Safe Space */
+        .ios-safe-space {
+            padding-top: 50px;
         }
     </style>
 </head>
-<body class="liquid-gradient min-h-screen pb-36">
+<body class="liquid-gradient min-h-screen pb-36 ios-safe-space">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute top-1/4 left-1/10 w-[450px] h-[450px] bg-primary/10 blur-[130px] rounded-full"></div>
         <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+    <!-- Consolidated Unified Header Navigation -->
+    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-3 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
         <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary" style="font-size: 28px;">storefront</span>
-            <h1 class="text-lg font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
+            <span class="material-symbols-outlined text-primary" style="font-size: 26px;">storefront</span>
+            <h1 class="text-md font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
         </div>
         <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5 shadow-inner">
             <svg class="w-4 h-4 mr-1.5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,51 +112,19 @@
         </div>
     </header>
 
-    <main class="pt-[90px] px-4 max-w-lg mx-auto z-10 relative">
+    <main class="px-4 max-w-lg mx-auto z-10 relative">
 
         <!-- ================= TAB 1: STORE ================= -->
         <section id="tab-store" class="tab-content active">
-            <div class="mb-5 mt-4">
-                <p class="text-[11px] font-bold text-primary tracking-widest uppercase mb-1">Explore Escrow</p>
-                <h2 class="text-2xl font-bold text-on-surface tracking-tight">MidMarket Store</h2>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5 mb-6">
-                <!-- Selector A: Gift Type -->
-                <div class="relative">
-                    <button onclick="toggleFilterMenu('giftTypeDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
-                        <span id="labelGiftType" class="truncate">Gift Type</span>
-                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
-                    </button>
-                    <div id="giftTypeDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
-                        <button onclick="applyGiftTypeFilter('all', 'All Gifts')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Gifts</button>
-                        <div id="giftTypeOptions" class="space-y-1"></div>
-                    </div>
-                </div>
-
-                <!-- Selector B: Model -->
-                <div class="relative">
-                    <button onclick="toggleFilterMenu('modelDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
-                        <span id="labelModel" class="truncate">Model</span>
-                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
-                    </button>
-                    <div id="modelDrop" class="hidden absolute left-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
-                        <button onclick="applyModelFilter('all', 'All Models')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Models</button>
-                        <div id="modelOptions" class="space-y-1"></div>
-                    </div>
-                </div>
-
-                <!-- Selector C: Backdrop -->
-                <div class="relative">
-                    <button onclick="toggleFilterMenu('backdropDrop')" class="w-full bg-white/5 border border-white/10 text-[10px] font-semibold text-white rounded-xl py-3 px-2.5 flex items-center justify-between shadow-sm active:scale-95 transition-transform duration-100">
-                        <span id="labelBackdrop" class="truncate">Backdrop</span>
-                        <span class="material-symbols-outlined text-xs text-primary">expand_more</span>
-                    </button>
-                    <div id="backdropDrop" class="hidden absolute right-0 w-44 mt-2 bg-[#131313]/95 backdrop-blur-[20px] border border-white/12 rounded-xl shadow-2xl z-50 p-1.5 space-y-1 custom-dropdown-menu max-h-56 overflow-y-auto">
-                        <button onclick="applyBackdropFilter('all', 'All Colors')" class="w-full text-left text-[10px] text-white p-2 hover:bg-white/5 rounded-lg flex items-center gap-2">All Colors</button>
-                        <div id="backdropOptions" class="space-y-1"></div>
-                    </div>
-                </div>
+            <!-- Large Trigger Window button for filters -->
+            <div class="mt-4 mb-5">
+                <button onclick="openFilterSelectorWindow()" class="w-full ios-glass text-xs font-bold py-3.5 px-4 rounded-2xl flex items-center justify-between active:scale-[0.98] transition-transform duration-100">
+                    <span class="flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined text-base">page_info</span>
+                        Filter & Search Collections
+                    </span>
+                    <span class="material-symbols-outlined text-sm text-primary-container">arrow_forward_ios</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-2 gap-4" id="storeGrid"></div>
@@ -186,69 +136,112 @@
                 <div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-[30px] rounded-full"></div>
                 <h3 class="font-bold text-white mb-2 flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-primary text-base">autorenew</span>
-                    Automated Telegram Escrow Deposits
+                    Escrow Link Verification
                 </h3>
-                <p class="text-on-surface-variant leading-relaxed mb-3 opacity-90">Send your native Star Gift directly inside Telegram to our escrow agent account:</p>
-                <div class="bg-black/40 rounded-xl p-3 flex justify-between items-center border border-white/5 mb-3 shadow-inner">
-                    <span class="font-mono text-white text-[11px] font-semibold" id="botEscrowName">@GiftRelayerBot</span>
+                <p class="text-on-surface-variant leading-relaxed mb-3 opacity-90">Send any unique gift URL or slug to our active relayer userbot inside Telegram to deposit instantly.</p>
+                <div class="bg-black/40 rounded-xl p-3 flex justify-between items-center border border-white/5 shadow-inner">
+                    <span class="font-mono text-white text-[11px] font-semibold">@GiftRelayerBot</span>
                     <span class="material-symbols-outlined text-[15px] cursor-pointer text-primary hover:text-white" onclick="navigator.clipboard.writeText('@GiftRelayerBot')">content_copy</span>
                 </div>
-                <p class="text-[10px] text-on-surface-variant opacity-60 leading-normal">Your Telegram sender ID is intercepted on the fly, instantly routing the asset to your escrow inventory list.</p>
-            </div>
-
-            <div class="mb-4 mt-2">
-                <h2 class="text-base font-bold text-on-surface">Escrow Inventory</h2>
-                <p class="text-xs text-on-surface-variant">Manage items currently stored inside our platform relayer</p>
             </div>
             <div class="grid grid-cols-2 gap-4" id="inventoryGrid"></div>
         </section>
 
         <!-- ================= TAB 3: SHOPPING QUEUE ================= -->
         <section id="tab-cart" class="tab-content">
-            <div class="mb-6 mt-4">
-                <h2 class="text-2xl font-bold text-on-surface">Shopping Queue</h2>
-                <p class="text-xs text-on-surface-variant">Perform batch checkouts on off-chain listed gifts instantly</p>
+            <div class="mb-4 mt-4">
+                <p class="text-[11px] font-bold text-primary-container tracking-widest uppercase mb-1">Queue Checkout</p>
+                <h2 class="text-xl font-bold text-on-surface">Queue</h2>
             </div>
-            <div class="space-y-4" id="cartItemsList"></div>
+            <div class="space-y-3" id="cartItemsList"></div>
             
-            <div class="frosted-border rounded-2xl p-5 mt-6 flex flex-col gap-4">
+            <div class="frosted-border rounded-2xl p-5 mt-5 flex flex-col gap-4">
                 <div class="flex justify-between items-center text-sm">
-                    <span class="text-on-surface-variant">Total Cost</span>
+                    <span class="text-on-surface-variant">Batch Price</span>
                     <span class="font-bold text-white text-lg font-mono-sm" id="cartTotalPrice">0 GRAM</span>
                 </div>
-                <button class="glossy-button w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-sm" id="checkoutBtn">Buy Now</button>
+                <button class="glossy-button w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-sm" id="checkoutBtn" onclick="checkoutCartQueue()">Checkout Batch</button>
             </div>
         </section>
 
         <!-- ================= TAB 4: PROFILE & SETTINGS ================= -->
         <section id="tab-profile" class="tab-content">
-            <div class="frosted-border rounded-2xl p-6 mb-6 mt-4 text-center flex flex-col items-center shadow-lg relative overflow-hidden">
-                <div class="absolute -top-10 -left-10 w-24 h-24 bg-primary-container/10 blur-2xl rounded-full"></div>
-                <p class="text-xs text-on-surface-variant mb-2 font-medium">Internal Vault Ledger</p>
-                <div class="flex items-center mb-5">
-                    <svg class="w-8 h-8 mr-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 5 L95 50 L50 95 L5 50 Z" fill="#24A1DE"/><path d="M50 25 L56.5 39 L72 39.5 L60 48.5 L64.5 64 L50 55 L35.5 64 L40 48.5 L28 39.5 L43.5 39 Z" fill="white"/></svg>
-                    <span class="text-2xl font-bold text-white font-mono-sm" id="profileBalance">0 GRAM</span>
+            <!-- iOS Glass Profile card with User Data -->
+            <div class="ios-glass rounded-3xl p-5 mb-5 mt-4 flex items-center gap-4 relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/15 blur-xl rounded-full"></div>
+                <div id="userAvatarContainer" class="w-14 h-14 rounded-full flex items-center justify-center bg-primary-container/20 border border-white/10 font-bold text-white text-lg overflow-hidden">
+                    <span id="userInitials">U</span>
                 </div>
-                <div class="flex gap-3 w-full">
-                    <button class="flex-1 py-3 rounded-xl bg-primary text-on-primary text-xs font-bold shadow-md active:scale-95 duration-100" onclick="triggerTONDeposit()">On-Chain Deposit</button>
-                    <button class="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-white/10 active:scale-95 duration-100" onclick="alert('Withdraw triggered!')">Withdraw</button>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-bold text-white text-sm truncate" id="profileDisplayName">Telegram Profile</h3>
+                    <p class="text-xs text-on-surface-variant truncate" id="profileUserName">@user_id</p>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <span class="text-[10px] text-primary uppercase tracking-widest font-bold">Ledger Balance</span>
+                    <span class="text-sm font-extrabold text-white font-mono-sm" id="profileBalance">0 GRAM</span>
                 </div>
             </div>
 
-            <div class="mb-6">
-                <h3 class="text-sm font-bold text-on-surface mb-3 flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary">account_balance_wallet</span>TON Connect Wallet Integration</h3>
-                <div class="frosted-border rounded-2xl p-5 flex flex-col gap-3">
-                    <div id="ton-connect-btn" class="flex justify-center"></div>
-                </div>
+            <div class="frosted-border rounded-2xl p-5 text-center flex flex-col items-center gap-3 mb-5">
+                <button class="w-full py-3.5 rounded-xl bg-primary text-black text-xs font-bold shadow-md active:scale-95 duration-100" onclick="triggerTONDeposit()">On-Chain Deposit</button>
+                <div id="ton-connect-btn" class="flex justify-center mt-1"></div>
             </div>
         </section>
 
     </main>
 
+    <!-- ================= BIG MODAL SELECTOR & SEARCH WINDOW ================= -->
+    <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="filterSelectorModalOverlay">
+        <div class="absolute inset-0 bg-[#0e0e0e]/80 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" onclick="closeFilterSelectorWindow()"></div>
+        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-5 shadow-2xl relative z-10 h-[85vh] pointer-events-auto">
+            <div class="w-full py-4 flex justify-center cursor-pointer" onclick="closeFilterSelectorWindow()"><div class="drag-handle"></div></div>
+            
+            <!-- Real-time filtering search bar -->
+            <div class="w-full mb-4 relative">
+                <input type="text" id="filterSearchInput" oninput="performSearchFilter()" placeholder="Search types, models or backdrops..." class="w-full bg-black/40 text-xs text-white border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary-container shadow-inner">
+                <span class="material-symbols-outlined text-sm absolute right-3.5 top-3.5 text-on-surface-variant">search</span>
+            </div>
+
+            <!-- Dynamic Search Body Content -->
+            <div class="w-full overflow-y-auto flex-1 space-y-5 pr-1" id="filterSelectionBody">
+                <div>
+                    <h3 class="text-[10px] font-bold text-primary tracking-widest uppercase mb-2">Gift Types</h3>
+                    <div class="grid grid-cols-2 gap-2" id="gridGiftTypes"></div>
+                </div>
+                <div>
+                    <h3 class="text-[10px] font-bold text-primary tracking-widest uppercase mb-2">Models</h3>
+                    <div class="grid grid-cols-2 gap-2" id="gridModels"></div>
+                </div>
+                <div>
+                    <h3 class="text-[10px] font-bold text-primary tracking-widest uppercase mb-2">Backdrops</h3>
+                    <div class="grid grid-cols-2 gap-2" id="gridBackdrops"></div>
+                </div>
+                <div>
+                    <h3 class="text-[10px] font-bold text-primary tracking-widest uppercase mb-2">Patterns</h3>
+                    <div class="grid grid-cols-2 gap-2" id="gridPatterns"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAKE OFFER MODAL ================= -->
+    <div class="fixed inset-0 z-50 pointer-events-none flex items-center justify-center p-4" id="offerModalOverlay">
+        <div class="absolute inset-0 bg-[#0e0e0e]/80 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" onclick="closeOfferModal()"></div>
+        <div class="glass-card w-full max-w-sm rounded-[28px] p-6 flex flex-col relative z-10 scale-95 opacity-0 transition-all duration-300 pointer-events-auto" id="offerCard">
+            <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-base">payments</span>Submit Off-Chain Offer</h3>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-4">Enter your customized offer in GRAM to send directly to the gift owner's ledger balance.</p>
+            <input type="number" id="offerPriceInput" placeholder="Price in GRAM" class="w-full bg-black/40 text-xs text-white border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary shadow-inner mb-4">
+            <div class="flex gap-2">
+                <button class="flex-1 py-3 bg-primary text-black font-bold text-xs rounded-xl active:scale-95 duration-100" onclick="submitOfferToBackend()">Send Offer</button>
+                <button class="flex-1 py-3 bg-white/5 border border-white/10 text-white font-bold text-xs rounded-xl active:scale-95 duration-100" onclick="closeOfferModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= THE PREVIEW BOTTOM SHEET MODAL ================= -->
     <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="detailModalOverlay">
-        <div class="absolute inset-0 bg-[#0e0e0e]/75 backdrop-blur-md opacity-0 transition-opacity duration-300" id="modalBg"></div>
-        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh]">
+        <div class="absolute inset-0 bg-[#0e0e0e]/75 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" id="modalBg"></div>
+        <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh] pointer-events-auto">
             <div class="w-full py-4 flex justify-center cursor-pointer" id="closeHandle"><div class="drag-handle"></div></div>
             <div class="w-full overflow-y-auto flex flex-col items-center no-scrollbar">
                 
@@ -272,9 +265,8 @@
                         <div class="bg-primary-container/20 p-2.5 rounded-full"><span class="material-symbols-outlined text-primary-container text-lg">payments</span></div>
                     </div>
                 </div>
-                <div class="w-full mt-5 flex flex-col gap-2.5">
-                    <div class="flex gap-2.5 w-full"><button class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 active:scale-95 duration-100 text-xs" id="modalBuyBtn">Buy Now</button><button class="frosted-border w-12 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100" id="modalCartIconBtn"><span class="material-symbols-outlined text-base">shopping_cart</span></button></div>
-                    <button class="frosted-border w-full py-3 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100 text-xs" id="modalOfferBtn">Make Offer</button>
+                <div class="w-full mt-5 flex flex-col gap-2.5" id="modalActionsBox">
+                    <!-- Dynamic rendering prevents self-purchasing -->
                 </div>
             </div>
         </div>
@@ -282,7 +274,7 @@
 
     <!-- ================= ESCROW CONFIRMATION MODAL ================= -->
     <div class="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center p-4" id="confirmOverlay">
-        <div class="absolute inset-0 bg-[#0e0e0e]/85 backdrop-blur-md opacity-0 transition-opacity duration-300" id="confirmBg"></div>
+        <div class="absolute inset-0 bg-[#0e0e0e]/85 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" id="confirmBg"></div>
         <div class="glass-card w-full max-w-sm rounded-[24px] p-6 flex flex-col items-center text-center relative z-10 scale-95 opacity-0 transition-all duration-300" id="confirmCard">
             <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4 text-primary"><span class="material-symbols-outlined text-2xl">check_circle</span></div>
             <h3 class="text-sm font-bold text-white mb-1.5" id="confirmTitle">-</h3>
@@ -295,7 +287,7 @@
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex justify-around items-center px-4 py-2.5 navigation-pill rounded-full w-[fit-content] min-w-[310px]">
         <button class="w-12 h-12 flex items-center justify-center text-primary bg-white/5 rounded-full transition-all duration-300" data-tab="store"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span></button>
         <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="inventory"><span class="material-symbols-outlined">auto_awesome_motion</span></button>
-        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300 relative" data-tab="cart"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full hidden" id="cartBadge"></span></button>
+        <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300 relative" data-tab="cart"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary-container rounded-full hidden" id="cartBadge"></span></button>
         <button class="w-12 h-12 flex items-center justify-center text-on-surface-variant rounded-full transition-all duration-300" data-tab="profile"><span class="material-symbols-outlined">account_circle</span></button>
     </nav>
 
@@ -307,25 +299,45 @@
         tg.ready();
         tg.expand();
 
+        // Standard requestFullscreen() execution wrapper to avoid platform blocks
+        try {
+            if (tg.requestFullscreen) {
+                tg.requestFullscreen();
+            }
+        } catch (e) {
+            console.warn("Fullscreen mode execution failed:", e);
+        }
+
         const initData = tg.initDataUnsafe;
-        const user = initData?.user || { id: 4590283, username: "TesterAccount" };
+        const user = initData?.user || { id: 4590283, username: "TesterAccount", first_name: "Tester" };
         
         const USER_TG_ID = user.id;
         const USER_NAME = user.username || `User_${USER_TG_ID}`;
 
         const PLATFORM_ESCROW_WALLET = "UQAAUfBRen6rPRg_BPoheYBWIijXcI3F90s2rflQiAmzrFvb";
 
-        let currentFilters = { model: 'all', backdrop: 'all', type: 'all' };
+        let currentFilters = { model: 'all', backdrop: 'all', type: 'all', pattern: 'all' };
         let activeAnimation = null;
         let selectedGift = null;
         let shoppingCart = [];
+        let filterData = { gift_types: [], models: [], backdrops: [] };
 
-        function toggleFilterMenu(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
+        // Unified Patterns structure
+        const PRESET_PATTERNS = [
+            { name: "Collectible", searchName: "Collectible" },
+            { name: "Star", searchName: "Star" },
+            { name: "Snowflake", searchName: "Snowflake" },
+            { name: "Heart", searchName: "Heart" }
+        ];
+
+        // Renders user avatar initials inside profile page layout
+        function setProfileAvatar() {
+            const initials = user.first_name ? user.first_name.slice(0, 2).toUpperCase() : "TG";
+            document.getElementById('userInitials').textContent = initials;
+            document.getElementById('profileDisplayName').textContent = user.first_name || "Telegram Profile";
+            document.getElementById('profileUserName').textContent = user.username ? `@${user.username}` : `@id_${USER_TG_ID}`;
         }
 
-        // Returns dynamic URL pointing to nft.fragment.com if the item is a unique NFT
         function getGiftImageUrl(gift) {
             if (gift.slug && !gift.slug.startsWith("standard-") && !gift.slug.startsWith("mock-gift-")) {
                 return `https://nft.fragment.com/gift/${gift.slug}.webp`;
@@ -333,67 +345,104 @@
             return gift.image_url;
         }
 
+        // --- DYNAMIC SEARCH & SELECTION SYSTEM ---
+        function openFilterSelectorWindow() {
+            const modal = document.getElementById('filterSelectorModalOverlay');
+            modal.classList.remove('pointer-events-none');
+            modal.querySelector('.bottom-sheet').classList.add('active');
+            modal.querySelector('.absolute').classList.add('opacity-100');
+            performSearchFilter();
+        }
+
+        function closeFilterSelectorWindow() {
+            const modal = document.getElementById('filterSelectorModalOverlay');
+            modal.querySelector('.bottom-sheet').classList.remove('active');
+            modal.querySelector('.absolute').classList.remove('opacity-100');
+            setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+        }
+
+        function performSearchFilter() {
+            const query = document.getElementById('filterSearchInput').value.toLowerCase();
+            
+            // 1. Render Gift Types
+            const typesGrid = document.getElementById('gridGiftTypes');
+            typesGrid.innerHTML = `<button onclick="selectGiftType('all', 'All Gifts')" class="p-3 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${currentFilters.type === 'all' ? 'border-primary text-primary' : 'text-white'}">All Gifts</button>`;
+            filterData.gift_types.filter(t => t.name.toLowerCase().includes(query)).forEach(t => {
+                const isSel = currentFilters.type == t.id;
+                typesGrid.innerHTML += `
+                    <button onclick="selectGiftType('${t.id}', '${t.name}')" class="p-3 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
+                        <img class="w-4 h-4 object-contain rounded" src="${t.image_url}">${t.name}
+                    </button>
+                `;
+            });
+
+            // 2. Render Models
+            const modelsGrid = document.getElementById('gridModels');
+            modelsGrid.innerHTML = `<button onclick="selectModel('all')" class="p-3 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${currentFilters.model === 'all' ? 'border-primary text-primary' : 'text-white'}">All Models</button>`;
+            filterData.models.filter(m => m.name.toLowerCase().includes(query)).forEach(m => {
+                const isSel = currentFilters.model === m.name;
+                modelsGrid.innerHTML += `
+                    <button onclick="selectModel('${m.name}')" class="p-3 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
+                        <img class="w-4 h-4 object-contain rounded" src="${m.image_url}">${m.name}
+                    </button>
+                `;
+            });
+
+            // 3. Render Backdrops
+            const backdropsGrid = document.getElementById('gridBackdrops');
+            backdropsGrid.innerHTML = `<button onclick="selectBackdrop('all')" class="p-3 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${currentFilters.backdrop === 'all' ? 'border-primary text-primary' : 'text-white'}">All Colors</button>`;
+            filterData.backdrops.filter(b => b.name.toLowerCase().includes(query)).forEach(b => {
+                const isSel = currentFilters.backdrop === b.name;
+                backdropsGrid.innerHTML += `
+                    <button onclick="selectBackdrop('${b.name}')" class="p-3 frosted-border rounded-xl flex items-center gap-2 text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
+                        <div class="w-3.5 h-3.5 rounded-full shrink-0" style="background: ${b.gradient}"></div>${b.name}
+                    </button>
+                `;
+            });
+
+            // 4. Render Patterns
+            const patternGrid = document.getElementById('gridPatterns');
+            patternGrid.innerHTML = `<button onclick="selectPattern('all')" class="p-3 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${currentFilters.pattern === 'all' ? 'border-primary text-primary' : 'text-white'}">All Patterns</button>`;
+            PRESET_PATTERNS.filter(p => p.name.toLowerCase().includes(query)).forEach(p => {
+                const isSel = currentFilters.pattern === p.name;
+                patternGrid.innerHTML += `
+                    <button onclick="selectPattern('${p.name}')" class="p-3 frosted-border rounded-xl text-left text-xs font-semibold hover:bg-white/5 truncate ${isSel ? 'border-primary text-primary' : 'text-white'}">
+                        ${p.name}
+                    </button>
+                `;
+            });
+        }
+
+        function selectGiftType(id, name) {
+            currentFilters.type = id;
+            fetchDropdownFilters(name !== "All Gifts" ? name : "Artisan Brick");
+            applyActiveFilters();
+            closeFilterSelectorWindow();
+        }
+        function selectModel(name) {
+            currentFilters.model = name;
+            applyActiveFilters();
+            closeFilterSelectorWindow();
+        }
+        function selectBackdrop(name) {
+            currentFilters.backdrop = name;
+            applyActiveFilters();
+            closeFilterSelectorWindow();
+        }
+        function selectPattern(name) {
+            currentFilters.pattern = name;
+            applyActiveFilters();
+            closeFilterSelectorWindow();
+        }
+
         async function fetchDropdownFilters(giftTypeName = "Artisan Brick") {
             try {
                 let r = await fetch(`${API_BASE}/api/filters?gift_type=${encodeURIComponent(giftTypeName)}`);
-                let filterData = await r.json();
-
-                const typeContainer = document.getElementById('giftTypeOptions');
-                typeContainer.innerHTML = '';
-                filterData.gift_types.forEach(t => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
-                    btn.innerHTML = `<img class="w-4 h-4 object-contain rounded" src="${t.image_url}"> ${t.name}`;
-                    btn.onclick = () => applyGiftTypeFilter(t.id, t.name);
-                    typeContainer.appendChild(btn);
-                });
-
-                const modelContainer = document.getElementById('modelOptions');
-                modelContainer.innerHTML = '';
-                filterData.models.forEach(m => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
-                    btn.innerHTML = `<img class="w-4 h-4 object-contain rounded" src="${m.image_url}"> ${m.name}`;
-                    btn.onclick = () => applyModelFilter(m.name, m.name);
-                    modelContainer.appendChild(btn);
-                });
-
-                const backdropContainer = document.getElementById('backdropOptions');
-                backdropContainer.innerHTML = '';
-                filterData.backdrops.forEach(b => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left text-[10px] p-2 hover:bg-white/5 rounded-lg flex items-center gap-2";
-                    btn.innerHTML = `<div class="w-3.5 h-3.5 rounded-full" style="background: ${b.gradient}"></div> ${b.name}`;
-                    btn.onclick = () => applyBackdropFilter(b.name, b.name);
-                    backdropContainer.appendChild(btn);
-                });
+                filterData = await r.json();
+                performSearchFilter();
             } catch(e) {
                 console.error("Filter populating failure:", e);
             }
-        }
-
-        function applyGiftTypeFilter(val, label) {
-            currentFilters.type = val;
-            document.getElementById('labelGiftType').textContent = label;
-            toggleFilterMenu('giftTypeDrop');
-            
-            // Fetch dynamically updated models/backdrops based on the selected gift type
-            fetchDropdownFilters(label);
-            applyActiveFilters();
-        }
-        
-        function applyModelFilter(val, label) {
-            currentFilters.model = val;
-            document.getElementById('labelModel').textContent = label;
-            toggleFilterMenu('modelDrop');
-            applyActiveFilters();
-        }
-        
-        function applyBackdropFilter(val, label) {
-            currentFilters.backdrop = val;
-            document.getElementById('labelBackdrop').textContent = label;
-            toggleFilterMenu('backdropDrop');
-            applyActiveFilters();
         }
 
         async function applyActiveFilters() {
@@ -405,12 +454,14 @@
                     const mMatch = (currentFilters.model === 'all' || item.model.toLowerCase() === currentFilters.model.toLowerCase());
                     const bMatch = (currentFilters.backdrop === 'all' || item.backdrop.toLowerCase() === currentFilters.backdrop.toLowerCase());
                     const tMatch = (currentFilters.type === 'all' || item.slug.includes(currentFilters.type));
-                    return mMatch && bMatch && tMatch;
+                    const pMatch = (currentFilters.pattern === 'all' || (item.symbol && item.symbol.toLowerCase() === currentFilters.pattern.toLowerCase()));
+                    return mMatch && bMatch && tMatch && pMatch;
                 });
                 renderStoreGrid(filtered);
             } catch(e) { console.error(e); }
         }
 
+        // --- REAL TIME INTEGRATED SYNC AND REFRESH POLLING ---
         async function bootUserSession() {
             try {
                 await fetch(`${API_BASE}/api/register`, {
@@ -418,16 +469,27 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ telegram_id: USER_TG_ID, username: USER_NAME })
                 });
-                await syncUserProfile();
+                setProfileAvatar();
+                await runSynchronizedUpdates();
+                
+                // Initialize background polling loop every 4 seconds
+                setInterval(runSynchronizedUpdates, 4000);
             } catch(e) { console.error(e); }
+        }
+
+        async function runSynchronizedUpdates() {
+            await syncUserProfile();
+            await applyActiveFilters();
+            await syncInventory();
+            renderCartQueue();
         }
 
         async function syncUserProfile() {
             try {
                 let r = await fetch(`${API_BASE}/api/profile/${USER_TG_ID}`);
-                let user = await r.json();
-                document.getElementById('globalBalance').textContent = `${user.balance_gram} GRAM`;
-                document.getElementById('profileBalance').textContent = `${user.balance_gram} GRAM`;
+                let user_data = await r.json();
+                document.getElementById('globalBalance').textContent = `${user_data.balance_gram} GRAM`;
+                document.getElementById('profileBalance').textContent = `${user_data.balance_gram} GRAM`;
             } catch(e) { console.error(e); }
         }
 
@@ -439,6 +501,7 @@
                 return;
             }
             listings.forEach(gift => {
+                const isSelf = gift.owner_id === USER_TG_ID;
                 const card = document.createElement('div');
                 card.className = 'glass-card rounded-[24px] overflow-hidden flex flex-col cursor-pointer';
                 card.innerHTML = `
@@ -451,16 +514,20 @@
                     <div class="p-3.5 flex flex-col gap-1">
                         <div>
                             <h3 class="text-xs font-bold text-on-surface truncate leading-tight">${gift.title}</h3>
-                            <span class="text-[9px] text-on-surface-variant block mt-0.5">Stars Gift</span>
+                            <span class="text-[9px] text-on-surface-variant block mt-0.5">${gift.is_listed ? 'Escrow Escrow' : 'Standard'}</span>
                         </div>
                         <div class="flex justify-between items-center mt-1">
                             <span class="text-[12px] font-bold text-primary-container font-mono-sm">${gift.price} GRAM</span>
                         </div>
                         <div class="grid grid-cols-4 gap-1.5 mt-2 w-full">
-                            <button onclick="event.stopPropagation(); buyNowInstant(${gift.id})" class="col-span-3 py-2 bg-primary text-on-primary font-bold text-[10px] rounded-lg active:scale-95 duration-100 flex items-center justify-center">Buy Now</button>
-                            <button onclick="event.stopPropagation(); toggleCartQueue(${gift.id})" class="col-span-1 py-2 bg-white/5 border border-white/10 text-primary hover:bg-white/10 rounded-lg active:scale-95 duration-100 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">shopping_cart</span>
-                            </button>
+                            ${isSelf ? `
+                                <span class="col-span-4 text-[10px] py-2 bg-white/5 border border-white/5 text-center text-on-surface-variant rounded-lg font-bold">Your Listed Item</span>
+                            ` : `
+                                <button onclick="event.stopPropagation(); buyNowInstant(${gift.id})" class="col-span-3 py-2 bg-primary text-black font-extrabold text-[10px] rounded-lg active:scale-95 duration-100 flex items-center justify-center">Buy</button>
+                                <button onclick="event.stopPropagation(); addToCartQueue(${gift.id}, '${gift.title}', ${gift.price}, '${getGiftImageUrl(gift)}')" class="col-span-1 py-2 bg-white/5 border border-white/10 text-primary hover:bg-white/10 rounded-lg active:scale-95 duration-100 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                </button>
+                            `}
                         </div>
                     </div>
                 `;
@@ -477,23 +544,87 @@
                     body: JSON.stringify({ gift_id: id, buyer_id: USER_TG_ID })
                 });
                 if (r.status === 400) {
-                    alert("Transaction failed: Check balance boundaries.");
+                    const data = await r.json();
+                    alert(`Purchase failed: ${data.detail}`);
                     return;
                 }
-                await syncUserProfile();
-                await applyActiveFilters();
-                await syncInventory();
-                
-                triggerSuccessModal("Purchase Completed!", "Your collectible is parked securely in your Relayer escrow. Click below to view.", "View Escrow", "inventory");
+                await runSynchronizedUpdates();
+                triggerSuccessModal("Purchase Complete!", "The unique collectible is now parked inside your escrow inventory profiles.", "View Escrow", "inventory");
             } catch(e) {
-                alert("Buy trade failed: Check ledger bounds.");
+                alert("Transaction rejected.");
             }
         }
 
-        function toggleCartQueue(id) {
-            alert("Added item to shopping checkout queue.");
+        // --- CART QUEUE ACTIONS AND RENDER ---
+        function addToCartQueue(id, title, price, img) {
+            if (shoppingCart.some(i => i.id === id)) {
+                alert("Item already exists inside the cart queue.");
+                return;
+            }
+            shoppingCart.push({ id, title, price, image: img });
+            renderCartQueue();
+            alert("Added item to shopping queue.");
         }
 
+        function removeFromCartQueue(id) {
+            shoppingCart = shoppingCart.filter(i => i.id !== id);
+            renderCartQueue();
+        }
+
+        function renderCartQueue() {
+            const container = document.getElementById('cartItemsList');
+            const badge = document.getElementById('cartBadge');
+            
+            if (shoppingCart.length > 0) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            container.innerHTML = '';
+            if (shoppingCart.length === 0) {
+                container.innerHTML = `<p class="text-xs text-center text-on-surface-variant py-8 font-medium">Your shopping queue is currently empty.</p>`;
+                document.getElementById('cartTotalPrice').textContent = "0 GRAM";
+                return;
+            }
+
+            let total = 0;
+            shoppingCart.forEach(item => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'ios-glass rounded-2xl p-4 flex items-center justify-between';
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img class="w-12 h-12 rounded-xl object-contain bg-black/30" src="${item.image}">
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${item.title}</h4>
+                            <span class="text-[10px] text-primary font-mono-sm">${item.price} GRAM</span>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCartQueue(${item.id})" class="text-red-400 hover:text-red-500 active:scale-95"><span class="material-symbols-outlined text-base">delete</span></button>
+                `;
+                container.appendChild(div);
+            });
+            document.getElementById('cartTotalPrice').textContent = `${total} GRAM`;
+        }
+
+        async function checkoutCartQueue() {
+            if (shoppingCart.length === 0) return;
+            for (let item of shoppingCart) {
+                try {
+                    await fetch(`${API_BASE}/api/buy`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ gift_id: item.id, buyer_id: USER_TG_ID })
+                    });
+                } catch(e) { console.error(e); }
+            }
+            shoppingCart = [];
+            await runSynchronizedUpdates();
+            triggerSuccessModal("Batch Checked out!", "All successfully processed orders are listed inside your escrow profile inventory.", "View Escrow", "inventory");
+        }
+
+        // --- INVENTORY MANAGEMENT AND SIMULATION ---
         async function syncInventory() {
             const grid = document.getElementById('inventoryGrid');
             try {
@@ -520,16 +651,14 @@
                                 <span class="text-[9px] text-on-surface-variant block">Escrow Asset</span>
                             </div>
                             <div class="flex flex-col gap-1" id="listing-actions-${index}">
-                                <button class="w-full py-2 rounded-lg bg-primary text-on-primary text-[10px] font-bold active:scale-95 duration-100" onclick="showInlineListingInput(${index}, ${item.id})">List for Sale</button>
-                                <button class="w-full py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-semibold text-white active:scale-95 duration-100">Withdraw to TG</button>
+                                <button class="w-full py-2 rounded-lg bg-primary text-black text-[10px] font-bold active:scale-95 duration-100" onclick="showInlineListingInput(${index}, ${item.id})">List for Sale</button>
+                                <button class="w-full py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-semibold text-white active:scale-95 duration-100" onclick="simulateWithdrawal(${item.id})">Withdraw to TG</button>
                             </div>
                         </div>
                     `;
                     grid.appendChild(card);
                 });
-            } catch(e) {
-                console.error("Inventory load failed:", e);
-            }
+            } catch(e) { console.error(e); }
         }
 
         function showInlineListingInput(index, id) {
@@ -538,7 +667,7 @@
                 <div class="flex flex-col gap-1.5 mt-1">
                     <input id="list-price-${index}" type="number" placeholder="Price in G" class="w-full bg-black/40 text-[10px] border border-white/10 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-primary">
                     <div class="flex gap-1.5">
-                        <button onclick="confirmListing(${index}, ${id})" class="flex-1 py-1.5 bg-primary text-on-primary font-bold text-[9px] rounded-lg active:scale-95 duration-100">Confirm</button>
+                        <button onclick="confirmListing(${index}, ${id})" class="flex-1 py-1.5 bg-primary text-black font-extrabold text-[9px] rounded-lg active:scale-95 duration-100">Confirm</button>
                         <button onclick="syncInventory()" class="py-1.5 px-2 bg-white/5 border border-white/10 text-[9px] rounded-lg text-white">Cancel</button>
                     </div>
                 </div>
@@ -546,7 +675,7 @@
         }
 
         async function confirmListing(index, id) {
-            const price = parseInt(document.getElementById(`list-price-${index}`).value);
+            const price = parseFloat(document.getElementById(`list-price-${index}`).value);
             if (isNaN(price) || price <= 0) {
                 alert("Enter a valid price in GRAM.");
                 return;
@@ -557,16 +686,33 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ gift_id: id, price: price })
                 });
-                await syncInventory();
-                await applyActiveFilters();
-                triggerSuccessModal("Listing Complete", "Your gift listings have been broadcasted securely to the store catalog.", "Browse Store", "store");
+                await runSynchronizedUpdates();
+                triggerSuccessModal("Listing Complete!", "Your unique collectible list has been active inside the store catalog.", "Browse Catalog", "store");
             } catch(e) { console.error(e); }
         }
 
+        async function simulateWithdrawal(id) {
+            try {
+                let r = await fetch(`${API_BASE}/api/withdraw`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ gift_id: id, telegram_id: USER_TG_ID })
+                });
+                if (r.status === 400) {
+                    alert("Simulation aborted: Withdrawal requires at least 0.2 GRAM balance fee.");
+                    return;
+                }
+                await runSynchronizedUpdates();
+                triggerSuccessModal("Simulation Withdrawal!", "0.2 GRAM payment processed successfully and the collectible was withdrawn from your escrow balance.", "View Profiles", "profile");
+            } catch(e) { console.error(e); }
+        }
+
+        // --- TON CONNECT DAPP INTEGRATION ---
         let tonConnectUI;
         document.addEventListener("DOMContentLoaded", () => {
             tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                manifestUrl: 'https://raw.githubusercontent.com/Vasiliy-katsyka/midmarket/refs/heads/main/tonconnect-manifest.json',
+                // Directly points to local backend endpoints, preventing dapp manifest errors
+                manifestUrl: `${API_BASE}/tonconnect-manifest.json`,
                 buttonRootId: 'ton-connect-btn'
             });
         });
@@ -577,7 +723,7 @@
                 return;
             }
             const amountStr = prompt("Enter deposit amount in GRAM:");
-            const amount = parseInt(amountStr);
+            const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount <= 0) return;
 
             const nanogramsValue = (amount * 1_000_000_000).toString();
@@ -609,12 +755,49 @@
                 } else {
                     alert("On-chain confirm queue is pending. Balance will update on confirmation.");
                 }
-            } catch(e) {
-                alert("Transaction expired or rejected.");
-            }
+            } catch(e) { alert("Transaction failed."); }
         }
 
-        // Preview Sheet
+        // --- OFF-CHAIN OFFERS ENGINE ---
+        function openOfferModal() {
+            const overlay = document.getElementById('offerModalOverlay');
+            overlay.classList.remove('pointer-events-none');
+            document.getElementById('offerCard').classList.remove('scale-95', 'opacity-0');
+            document.getElementById('offerCard').classList.add('scale-100', 'opacity-100');
+            overlay.querySelector('.absolute').classList.add('opacity-100');
+        }
+
+        function closeOfferModal() {
+            const overlay = document.getElementById('offerModalOverlay');
+            document.getElementById('offerCard').classList.add('scale-95', 'opacity-0');
+            document.getElementById('offerCard').classList.remove('scale-100', 'opacity-100');
+            overlay.querySelector('.absolute').classList.remove('opacity-100');
+            setTimeout(() => overlay.classList.add('pointer-events-none'), 300);
+        }
+
+        async function submitOfferToBackend() {
+            const amount = parseFloat(document.getElementById('offerPriceInput').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Enter a valid offer amount.");
+                return;
+            }
+            try {
+                let r = await fetch(`${API_BASE}/api/offer`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ gift_id: selectedGift.id, sender_id: USER_TG_ID, amount: amount })
+                });
+                closeOfferModal();
+                if (r.status === 400) {
+                    const data = await r.json();
+                    alert(`Failed to make offer: ${data.detail}`);
+                    return;
+                }
+                triggerSuccessModal("Offer Sent Successfully!", "Your off-chain offer was safely transmitted to the item owner.", "Browse Store", "store");
+            } catch(e) { console.error(e); }
+        }
+
+        // Preview Sheet Modal Controls
         const detailModalOverlay = document.getElementById('detailModalOverlay');
         const sheet = document.querySelector('.bottom-sheet');
         const modalLottie = document.getElementById('modalLottie');
@@ -625,6 +808,7 @@
         const bentoModel = document.getElementById('bentoModel');
         const bentoBackdrop = document.getElementById('bentoBackdrop');
         const bentoSymbol = document.getElementById('bentoSymbol');
+        const modalActionsBox = document.getElementById('modalActionsBox');
 
         function openPreviewModal(gift) {
             selectedGift = gift;
@@ -638,6 +822,23 @@
             bentoModel.textContent = gift.model || "3D Lottie";
             bentoBackdrop.textContent = gift.backdrop || "Default Glow";
             bentoSymbol.textContent = gift.symbol || "Stars";
+
+            // Prevent self-buying inside detail sheet modal
+            const isSelf = gift.owner_id === USER_TG_ID;
+            modalActionsBox.innerHTML = '';
+            if (isSelf) {
+                modalActionsBox.innerHTML = `
+                    <button class="w-full py-4 rounded-xl font-bold bg-white/5 border border-white/5 text-xs text-on-surface-variant cursor-not-allowed">Your Listed Item</button>
+                `;
+            } else {
+                modalActionsBox.innerHTML = `
+                    <div class="flex gap-2.5 w-full">
+                        <button onclick="buyNowInstant(${gift.id})" class="glossy-button flex-1 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 active:scale-95 duration-100 text-xs">Buy Now</button>
+                        <button onclick="addToCartQueue(${gift.id}, '${gift.title}', ${gift.price}, '${getGiftImageUrl(gift)}')" class="frosted-border w-12 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+                    </div>
+                    <button class="frosted-border w-full py-3 rounded-xl font-bold text-white flex items-center justify-center active:scale-95 duration-100 text-xs" onclick="openOfferModal()">Make Offer</button>
+                `;
+            }
 
             detailModalOverlay.classList.remove('pointer-events-none');
             detailModalOverlay.classList.add('pointer-events-auto');
@@ -656,7 +857,6 @@
                     path: animationUrl
                 });
             } else {
-                // Safely render fallback static imagery inside modal presentation container for standard types
                 modalLottie.innerHTML = `<img class="w-24 h-24 object-contain" src="${getGiftImageUrl(gift)}" alt="${gift.title}">`;
             }
         }
@@ -672,14 +872,7 @@
             }
         }
 
-        document.getElementById('modalBuyBtn').addEventListener('click', () => {
-            if (selectedGift) {
-                buyNowInstant(selectedGift.id);
-                closePreviewModal();
-            }
-        });
-
-        // Tab Switch Helper
+        // Tab Selector Logic
         const tabs = document.querySelectorAll('[data-tab]');
         const tabContents = document.querySelectorAll('.tab-content');
         const headerTitle = document.getElementById('headerTitle');
