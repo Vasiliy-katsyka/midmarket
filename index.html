@@ -43,33 +43,37 @@
                         radial-gradient(circle at 90% 80%, rgba(235, 106, 18, 0.06) 0%, transparent 50%), #0e0e0e;
         }
 
-        /* iOS Liquid Glass stylings */
+        /* Refined iOS Liquid Glass stylistic configurations */
         .liquid-glass {
-            background: rgba(30, 30, 30, 0.55);
-            backdrop-filter: blur(40px) saturate(210%);
-            -webkit-backdrop-filter: blur(40px) saturate(210%);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(35px) saturate(220%);
+            -webkit-backdrop-filter: blur(35px) saturate(220%);
             border: 1px solid rgba(255, 255, 255, 0.14);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.75), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.22);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25), 
+                        0 12px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 32px;
         }
 
         .glass-card {
-            background: rgba(25, 25, 25, 0.45);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: 0.5px solid rgba(255, 255, 255, 0.12);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 10px 25px rgba(0, 0, 0, 0.55);
-            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px) saturate(190%);
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 
+                        0 8px 24px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
         }
 
         .glass-card:active { transform: scale(0.97); }
 
         .navigation-pill {
-            background: rgba(18, 18, 18, 0.65);
-            backdrop-filter: blur(35px) saturate(190%);
-            -webkit-backdrop-filter: blur(35px) saturate(190%);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 
+                        0 16px 48px rgba(0, 0, 0, 0.7);
+            border-radius: 9999px; /* Absolute pill layout */
         }
 
         .bottom-sheet { transform: translateY(100%); transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -92,8 +96,8 @@
         <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <!-- Generates safe area padding only within the header container (down to 50px offset) -->
-    <header class="fixed top-0 left-0 right-0 w-full z-40 flex justify-between items-center px-6 pb-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]" style="padding-top: calc(var(--tg-safe-area-inset-top, 0px) + env(safe-area-inset-top, 0px) + 50px);">
+    <!-- Generates safe area only within the header container (down to 35px offset) -->
+    <header class="fixed top-0 left-0 right-0 w-full z-40 flex justify-between items-center px-6 pb-4 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]" style="padding-top: calc(var(--tg-safe-area-inset-top, 0px) + env(safe-area-inset-top, 0px) + 35px);">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-size: 26px;">storefront</span>
             <h1 class="text-md font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
@@ -107,13 +111,13 @@
         </div>
     </header>
 
-    <!-- Main viewport content wrapper strictly positioned beneath top header (no dynamic safe area on main) -->
-    <main class="pt-[115px] px-4 max-w-lg mx-auto z-10 relative">
+    <!-- Main content container uses clean static padding under header with no dynamic safe offsets -->
+    <main class="pt-[95px] px-4 max-w-lg mx-auto z-10 relative">
 
         <!-- ================= TAB 1: STORE ================= -->
         <section id="tab-store" class="tab-content active">
             <div class="mt-4 mb-5">
-                <button onclick="openFilterSelectorWindow()" class="w-full ios-glass text-xs font-bold py-3.5 px-4 rounded-2xl flex items-center justify-between active:scale-[0.98] transition-transform duration-100">
+                <button onclick="openFilterSelectorWindow()" class="w-full ios-glass text-xs font-bold py-3.5 px-4 rounded-2xl flex items-center justify-between active:scale-[0.98] transition-transform duration-100" style="border-radius: 32px;">
                     <span class="flex items-center gap-2 text-primary">
                         <span class="material-symbols-outlined text-base">page_info</span>
                         Filter & Search Collections
@@ -127,23 +131,23 @@
 
         <!-- ================= TAB 2: INVENTORY ================= -->
         <section id="tab-inventory" class="tab-content">
-            <div class="frosted-border rounded-2xl p-5 mb-5 mt-4 relative overflow-hidden text-xs">
+            <div class="frosted-border rounded-2xl p-5 mb-5 mt-4 relative overflow-hidden text-xs" style="border-radius: 24px;">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-[30px] rounded-full"></div>
                 <h3 class="font-bold text-white mb-2 flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-primary text-base">autorenew</span>
                     Escrow Link Verification
                 </h3>
                 <p class="text-on-surface-variant leading-relaxed mb-3 opacity-90">Send any unique gift URL or slug to our active relayer userbot inside Telegram to deposit instantly.</p>
-                <div class="bg-black/40 rounded-xl p-3 flex justify-between items-center border border-white/5 shadow-inner">
+                <div class="bg-black/40 rounded-xl p-3 flex justify-between items-center border border-white/5 shadow-inner" style="border-radius: 16px;">
                     <span class="font-mono text-white text-[11px] font-semibold">@GiftRelayerBot</span>
                     <span class="material-symbols-outlined text-[15px] cursor-pointer text-primary hover:text-white" onclick="navigator.clipboard.writeText('@GiftRelayerBot')">content_copy</span>
                 </div>
             </div>
 
-            <!-- Segment tabs to divide inventory into listed/unlisted items -->
-            <div class="flex bg-white/5 p-1 rounded-xl gap-1 mb-5">
-                <button onclick="switchInventorySubTab('unlisted')" id="sub-unlisted" class="flex-1 text-[10px] font-bold py-2.5 rounded-lg text-primary bg-white/10 transition-all">Unlisted Items</button>
-                <button onclick="switchInventorySubTab('listed')" id="sub-listed" class="flex-1 text-[10px] font-bold py-2.5 rounded-lg text-on-surface-variant transition-all">Currently Listed</button>
+            <!-- Segment sub-tabs divide your assets into listed and unlisted arrays -->
+            <div class="flex bg-white/5 p-1 gap-1 mb-5" style="border-radius: 32px;">
+                <button onclick="switchInventorySubTab('unlisted')" id="sub-unlisted" class="flex-1 text-[10px] font-bold py-2.5 rounded-lg text-primary bg-white/10 transition-all" style="border-radius: 28px;">Unlisted Items</button>
+                <button onclick="switchInventorySubTab('listed')" id="sub-listed" class="flex-1 text-[10px] font-bold py-2.5 rounded-lg text-on-surface-variant transition-all" style="border-radius: 28px;">Currently Listed</button>
             </div>
 
             <div class="grid grid-cols-2 gap-4" id="inventoryGrid"></div>
@@ -168,7 +172,7 @@
 
         <!-- ================= TAB 4: PROFILE & SETTINGS ================= -->
         <section id="tab-profile" class="tab-content">
-            <div class="ios-glass rounded-3xl p-5 mb-5 mt-4 flex items-center gap-4 relative overflow-hidden">
+            <div class="ios-glass rounded-3xl p-5 mb-5 mt-4 flex items-center gap-4 relative overflow-hidden" style="border-radius: 32px;">
                 <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/15 blur-xl rounded-full"></div>
                 <div id="userAvatarContainer" class="w-14 h-14 rounded-full flex items-center justify-center bg-primary-container/20 border border-white/10 font-bold text-white text-lg overflow-hidden">
                     <span id="userInitials">U</span>
@@ -183,7 +187,7 @@
                 </div>
             </div>
 
-            <div class="frosted-border rounded-2xl p-5 text-center flex flex-col items-center gap-3 mb-5">
+            <div class="frosted-border rounded-2xl p-5 text-center flex flex-col items-center gap-3 mb-5" style="border-radius: 24px;">
                 <button class="w-full py-3.5 rounded-xl bg-primary text-black text-xs font-bold shadow-md active:scale-95 duration-100" onclick="triggerTONDeposit()">On-Chain Deposit</button>
                 <button class="w-full py-3.5 rounded-xl bg-white/10 text-white text-xs font-semibold hover:bg-white/15 active:scale-95 duration-100" onclick="triggerDevTopup()">🧪 Dev Top-up (+100 GRAM)</button>
                 <div id="ton-connect-btn" class="flex justify-center mt-1"></div>
@@ -198,11 +202,11 @@
         <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-5 shadow-2xl relative z-10 h-[85vh] pointer-events-auto">
             <div class="w-full py-4 flex justify-center cursor-pointer" onclick="closeFilterSelectorWindow()"><div class="drag-handle"></div></div>
             
-            <div class="w-full flex bg-white/5 p-1 rounded-xl gap-1 mb-4">
-                <button onclick="switchFilterCategory('types')" id="seg-types" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-primary bg-white/10 transition-all">Types</button>
-                <button onclick="switchFilterCategory('models')" id="seg-models" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Models</button>
-                <button onclick="switchFilterCategory('backdrops')" id="seg-backdrops" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Colors</button>
-                <button onclick="switchFilterCategory('patterns')" id="seg-patterns" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all">Patterns</button>
+            <div class="w-full flex bg-white/5 p-1 gap-1 mb-4" style="border-radius: 32px;">
+                <button onclick="switchFilterCategory('types')" id="seg-types" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-primary bg-white/10 transition-all" style="border-radius: 28px;">Types</button>
+                <button onclick="switchFilterCategory('models')" id="seg-models" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all" style="border-radius: 28px;">Models</button>
+                <button onclick="switchFilterCategory('backdrops')" id="seg-backdrops" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all" style="border-radius: 28px;">Colors</button>
+                <button onclick="switchFilterCategory('patterns')" id="seg-patterns" class="flex-1 text-[10px] font-bold py-2 rounded-lg text-on-surface-variant transition-all" style="border-radius: 28px;">Patterns</button>
             </div>
 
             <div class="w-full mb-4 relative">
@@ -211,14 +215,14 @@
             </div>
 
             <div class="w-full overflow-y-auto flex-1 pr-1 pb-16" id="filterSelectionBody">
-                <!-- Slim, high-density grid rows for selector cards -->
+                <!-- Extremely compact 3-column selector grid limits oversize buttons -->
                 <div id="categoryGrid" class="grid grid-cols-3 gap-2">
                     <!-- Segment items rendered dynamically -->
                 </div>
             </div>
 
             <div class="absolute bottom-5 left-5 right-5 z-20">
-                <button onclick="closeFilterSelectorWindow()" class="glossy-button w-full py-3.5 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 active:scale-95 duration-100 shadow-xl">
+                <button onclick="closeFilterSelectorWindow()" class="glossy-button w-full py-3.5 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 active:scale-95 duration-100 shadow-xl" style="border-radius: 32px;">
                     <span class="material-symbols-outlined text-sm">done</span>
                     Apply Filters
                 </button>
@@ -250,7 +254,7 @@
             <h3 class="text-md font-bold text-white mb-1.5 text-center" id="promptTitle">Confirm Action</h3>
             <p class="text-xs text-on-surface-variant leading-relaxed mb-5 text-center" id="promptDesc">Are you sure you want to perform this action?</p>
             
-            <!-- Spacious numerical input area rendered dynamically when setting prices -->
+            <!-- Spacious inputs are completely isolated inside their own modal view -->
             <div id="promptInputBox" class="w-full hidden mb-5">
                 <input type="number" id="promptPriceInput" placeholder="Enter Price in GRAM" class="w-full bg-black/40 text-center text-sm text-white font-semibold border border-white/10 rounded-xl py-3.5 px-4 focus:outline-none focus:border-primary shadow-inner">
             </div>
@@ -290,7 +294,7 @@
                     </div>
                 </div>
                 <div class="w-full mt-5 flex flex-col gap-2.5" id="modalActionsBox">
-                    <!-- Dynamic rendering handles shop, listed inventory and unlisted inventory views -->
+                    <!-- Dynamic rendering handles storefront, unlisted assets and active listings -->
                 </div>
             </div>
         </div>
@@ -339,7 +343,14 @@
 
         const PLATFORM_ESCROW_WALLET = "UQAAUfBRen6rPRg_BPoheYBWIijXcI3F90s2rflQiAmzrFvb";
 
+        // Multi-select array storage architecture
         let currentFilters = { model: [], backdrop: [], type: [], pattern: [] };
+        
+        // Timeout storage safely isolates slide transitions and prevents closing race conditions
+        let previewModalTimeout = null;
+        let promptModalTimeout = null;
+        let confirmModalTimeout = null;
+
         let activeAnimation = null;
         let selectedGift = null;
         let shoppingCart = [];
@@ -368,7 +379,7 @@
             return gift.image_url;
         }
 
-        // --- FILTER CONFIGURATION ---
+        // --- DYNAMIC SEGMENTED FILTER SELECTION WINDOW ---
         function openFilterSelectorWindow() {
             const modal = document.getElementById('filterSelectorModalOverlay');
             modal.classList.remove('hidden');
@@ -390,6 +401,7 @@
 
         function switchFilterCategory(category) {
             activeFilterCategory = category;
+            
             const segments = ["types", "models", "backdrops", "patterns"];
             segments.forEach(seg => {
                 const btn = document.getElementById(`seg-${seg}`);
@@ -401,6 +413,7 @@
                     btn.classList.add('text-on-surface-variant');
                 }
             });
+
             performSearchFilter();
         }
 
@@ -412,7 +425,7 @@
             if (activeFilterCategory === "types") {
                 const isAllSel = currentFilters.type.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectGiftType('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                    <button onclick="selectGiftType('all')" class="p-2 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
                         All
                     </button>
                 `;
@@ -429,7 +442,7 @@
             else if (activeFilterCategory === "models") {
                 const isAllSel = currentFilters.model.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectModel('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                    <button onclick="selectModel('all')" class="p-2 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
                         All
                     </button>
                 `;
@@ -446,7 +459,7 @@
             else if (activeFilterCategory === "backdrops") {
                 const isAllSel = currentFilters.backdrop.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectBackdrop('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                    <button onclick="selectBackdrop('all')" class="p-2 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
                         All
                     </button>
                 `;
@@ -463,7 +476,7 @@
             else if (activeFilterCategory === "patterns") {
                 const isAllSel = currentFilters.pattern.length === 0;
                 grid.innerHTML += `
-                    <button onclick="selectPattern('all')" class="p-2.5 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
+                    <button onclick="selectPattern('all')" class="p-2 border rounded-xl text-center text-[10px] font-semibold hover:bg-white/5 truncate ${isAllSel ? 'border-primary text-primary bg-primary/10' : 'border-white/10 text-white bg-white/5'}">
                         All
                     </button>
                 `;
@@ -535,6 +548,7 @@
             try {
                 let r = await fetch(`${API_BASE}/api/store`);
                 let listings = await r.json();
+
                 const filtered = listings.filter(item => {
                     const mMatch = (currentFilters.model.length === 0 || currentFilters.model.includes(item.model));
                     const bMatch = (currentFilters.backdrop.length === 0 || currentFilters.backdrop.includes(item.backdrop));
@@ -546,7 +560,7 @@
             } catch(e) { console.error(e); }
         }
 
-        // --- REAL TIME INTEGRATED SYNC ---
+        // --- REAL TIME INTEGRATED SYNC AND REFRESH POLLING ---
         async function bootUserSession() {
             try {
                 await fetch(`${API_BASE}/api/register`, {
@@ -558,7 +572,6 @@
                 await syncUserProfile();
                 await applyActiveFilters();
                 
-                // Polling loop only syncs user profiles & storefront (not inventory grid to prevent flashing inputs)
                 setInterval(async () => {
                     await syncUserProfile();
                     await applyActiveFilters();
@@ -616,6 +629,27 @@
                 card.onclick = () => openPreviewModal(gift);
                 grid.appendChild(card);
             });
+        }
+
+        async function buyNowInstant(id) {
+            try {
+                let r = await fetch(`${API_BASE}/api/buy`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ gift_id: id, buyer_id: USER_TG_ID })
+                });
+                if (r.status === 400) {
+                    const data = await r.json();
+                    alert(`Purchase failed: ${data.detail}`);
+                    return;
+                }
+                await syncUserProfile();
+                await applyActiveFilters();
+                await syncInventory();
+                triggerSuccessModal("Purchase Complete!", "The unique collectible is now parked inside your escrow inventory profiles.", "View Escrow", "inventory");
+            } catch(e) {
+                alert("Transaction rejected.");
+            }
         }
 
         // --- CART QUEUE ACTIONS ---
@@ -712,14 +746,16 @@
                 let items = await r.json();
                 grid.innerHTML = '';
                 
-                // Segment items on the client-side seamlessly
+                // Filter listings according to active section tab
                 const renderedItems = items.filter(item => {
                     if (activeInventorySubTab === 'unlisted') {
-                        return item.is_listed === 0;
+                        return !item.is_listed || item.is_listed === 0;
                     } else {
                         return item.is_listed === 1;
                     }
                 });
+
+                console.log("DEBUG [syncInventory]: Raw elements", items, "Filtered output", renderedItems);
 
                 if (renderedItems.length === 0) {
                     grid.innerHTML = `<p class="col-span-2 text-xs text-center text-on-surface-variant py-8 font-medium">No items found in this section.</p>`;
@@ -789,6 +825,8 @@
                 }
             });
 
+            // Clean previous timing timeouts to prevent race conditions on screens opening
+            if (promptModalTimeout) clearTimeout(promptModalTimeout);
             overlay.classList.remove('hidden');
             setTimeout(() => {
                 document.getElementById('promptCard').classList.remove('scale-95', 'opacity-0');
@@ -802,10 +840,11 @@
             document.getElementById('promptCard').classList.add('scale-95', 'opacity-0');
             document.getElementById('promptCard').classList.remove('scale-100', 'opacity-100');
             overlay.querySelector('.absolute').classList.remove('opacity-100');
-            setTimeout(() => overlay.classList.add('hidden'), 300);
+            
+            if (promptModalTimeout) clearTimeout(promptModalTimeout);
+            promptModalTimeout = setTimeout(() => overlay.classList.add('hidden'), 300);
         }
 
-        // Spacious Price Entry Modal Trigger
         function triggerPriceInputModal(id, title, isUpdate = false) {
             closePreviewModal();
             const actionText = isUpdate ? "Update Price" : "List Asset";
@@ -814,7 +853,6 @@
                 `Enter the price in GRAM below to publish "${title}" onto the platform storefront.`,
                 (price) => {
                     closePromptModal();
-                    // Follow-up Confirmation Dialog ("Are you sure?")
                     triggerListingConfirmation(id, title, price);
                 },
                 true
@@ -822,6 +860,8 @@
         }
 
         function triggerListingConfirmation(id, title, price) {
+            if (promptModalTimeout) clearTimeout(promptModalTimeout);
+            
             openPromptModal(
                 "Are you sure?",
                 `Do you want to confirm listing "${title}" for sale at ${price} GRAM?`,
@@ -997,7 +1037,12 @@
 
         function openPreviewModal(gift) {
             selectedGift = gift;
-            closePreviewModal();
+            
+            // Explicitly bypass closePreviewModal to destroy active transitions timeouts
+            if (activeAnimation) {
+                activeAnimation.destroy();
+                activeAnimation = null;
+            }
 
             modalTitle.textContent = gift.title;
             modalNumber.textContent = `No. ${gift.serial_number.replace('#', '')} of Collection`;
@@ -1043,6 +1088,7 @@
                 `;
             }
 
+            if (previewModalTimeout) clearTimeout(previewModalTimeout);
             detailModalOverlay.classList.remove('hidden');
             setTimeout(() => {
                 document.getElementById('modalBg').classList.add('opacity-100');
@@ -1068,7 +1114,10 @@
         function closePreviewModal() {
             document.getElementById('modalBg').classList.remove('opacity-100');
             sheet.classList.remove('active');
-            setTimeout(() => { detailModalOverlay.classList.add('hidden'); }, 300);
+            
+            if (previewModalTimeout) clearTimeout(previewModalTimeout);
+            previewModalTimeout = setTimeout(() => { detailModalOverlay.classList.add('hidden'); }, 300);
+            
             if (activeAnimation) {
                 activeAnimation.destroy();
                 activeAnimation = null;
@@ -1095,7 +1144,6 @@
             document.getElementById(`tab-${target}`).classList.add('active');
             headerTitle.textContent = target === 'store' ? 'MidMarket' : target.charAt(0).toUpperCase() + target.slice(1);
             
-            // Sync inventory explicitly on tab switch to bypass recursive polling re-renders
             if (target === 'inventory') {
                 syncInventory();
             }
@@ -1114,7 +1162,7 @@
             ackBtn.textContent = buttonText;
             
             const newAckBtn = ackBtn.cloneNode(true);
-            ackBtn.parentNode.replaceChild(newAckBtn, ackBtn);
+            ackBtn.parentNode.replaceChild(newConfirmBtn, ackBtn);
 
             newAckBtn.addEventListener('click', () => {
                 closeSuccessModal();
@@ -1125,6 +1173,7 @@
             const card = document.getElementById('confirmCard');
             const bg = document.getElementById('confirmBg');
 
+            if (confirmModalTimeout) clearTimeout(confirmModalTimeout);
             overlay.classList.remove('hidden');
             setTimeout(() => {
                 bg.classList.add('opacity-100');
@@ -1141,7 +1190,9 @@
             bg.classList.remove('opacity-100');
             card.classList.remove('scale-100', 'opacity-100');
             card.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+            
+            if (confirmModalTimeout) clearTimeout(confirmModalTimeout);
+            confirmModalTimeout = setTimeout(() => { overlay.classList.add('hidden'); }, 300);
         }
 
         document.getElementById('closeHandle').addEventListener('click', closePreviewModal);
