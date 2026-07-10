@@ -83,22 +83,17 @@
 
         .custom-dropdown-menu::-webkit-scrollbar { width: 4px; }
         .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
-        
-        /* 50px Top Header Safe Space */
-        .ios-safe-space {
-            padding-top: 50px;
-        }
     </style>
 </head>
-<body class="liquid-gradient min-h-screen pb-36 ios-safe-space">
+<body class="liquid-gradient min-h-screen pb-36">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute top-1/4 left-1/10 w-[450px] h-[450px] bg-primary/10 blur-[130px] rounded-full"></div>
         <div class="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] bg-primary-container/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <!-- Consolidated Unified Header Navigation -->
-    <header class="fixed top-0 w-full z-40 flex justify-between items-center px-6 py-3 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+    <!-- Pushes header content below native Telegram controls while extending glass effect to top of screen -->
+    <header class="fixed top-0 left-0 right-0 w-full z-40 flex justify-between items-center px-6 pt-[55px] pb-3 bg-[#0e0e0e]/50 backdrop-blur-[35px] border-b border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-size: 26px;">storefront</span>
             <h1 class="text-md font-bold text-on-surface tracking-tight" id="headerTitle">MidMarket</h1>
@@ -112,11 +107,11 @@
         </div>
     </header>
 
-    <main class="px-4 max-w-lg mx-auto z-10 relative">
+    <!-- Content padding adjusted to start directly below custom status-bar safe area header -->
+    <main class="pt-[125px] px-4 max-w-lg mx-auto z-10 relative">
 
         <!-- ================= TAB 1: STORE ================= -->
         <section id="tab-store" class="tab-content active">
-            <!-- Large Trigger Window button for filters -->
             <div class="mt-4 mb-5">
                 <button onclick="openFilterSelectorWindow()" class="w-full ios-glass text-xs font-bold py-3.5 px-4 rounded-2xl flex items-center justify-between active:scale-[0.98] transition-transform duration-100">
                     <span class="flex items-center gap-2 text-primary">
@@ -166,7 +161,6 @@
 
         <!-- ================= TAB 4: PROFILE & SETTINGS ================= -->
         <section id="tab-profile" class="tab-content">
-            <!-- iOS Glass Profile card with User Data -->
             <div class="ios-glass rounded-3xl p-5 mb-5 mt-4 flex items-center gap-4 relative overflow-hidden">
                 <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/15 blur-xl rounded-full"></div>
                 <div id="userAvatarContainer" class="w-14 h-14 rounded-full flex items-center justify-center bg-primary-container/20 border border-white/10 font-bold text-white text-lg overflow-hidden">
@@ -191,18 +185,16 @@
     </main>
 
     <!-- ================= BIG MODAL SELECTOR & SEARCH WINDOW ================= -->
-    <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="filterSelectorModalOverlay">
+    <div class="fixed inset-0 z-50 hidden flex items-end justify-center" id="filterSelectorModalOverlay">
         <div class="absolute inset-0 bg-[#0e0e0e]/80 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" onclick="closeFilterSelectorWindow()"></div>
         <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-5 shadow-2xl relative z-10 h-[85vh] pointer-events-auto">
             <div class="w-full py-4 flex justify-center cursor-pointer" onclick="closeFilterSelectorWindow()"><div class="drag-handle"></div></div>
             
-            <!-- Real-time filtering search bar -->
             <div class="w-full mb-4 relative">
                 <input type="text" id="filterSearchInput" oninput="performSearchFilter()" placeholder="Search types, models or backdrops..." class="w-full bg-black/40 text-xs text-white border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary-container shadow-inner">
                 <span class="material-symbols-outlined text-sm absolute right-3.5 top-3.5 text-on-surface-variant">search</span>
             </div>
 
-            <!-- Dynamic Search Body Content -->
             <div class="w-full overflow-y-auto flex-1 space-y-5 pr-1" id="filterSelectionBody">
                 <div>
                     <h3 class="text-[10px] font-bold text-primary tracking-widest uppercase mb-2">Gift Types</h3>
@@ -225,7 +217,7 @@
     </div>
 
     <!-- ================= MAKE OFFER MODAL ================= -->
-    <div class="fixed inset-0 z-50 pointer-events-none flex items-center justify-center p-4" id="offerModalOverlay">
+    <div class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="offerModalOverlay">
         <div class="absolute inset-0 bg-[#0e0e0e]/80 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" onclick="closeOfferModal()"></div>
         <div class="glass-card w-full max-w-sm rounded-[28px] p-6 flex flex-col relative z-10 scale-95 opacity-0 transition-all duration-300 pointer-events-auto" id="offerCard">
             <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-base">payments</span>Submit Off-Chain Offer</h3>
@@ -239,7 +231,7 @@
     </div>
 
     <!-- ================= THE PREVIEW BOTTOM SHEET MODAL ================= -->
-    <div class="fixed inset-0 z-50 pointer-events-none flex items-end justify-center" id="detailModalOverlay">
+    <div class="fixed inset-0 z-50 hidden flex items-end justify-center" id="detailModalOverlay">
         <div class="absolute inset-0 bg-[#0e0e0e]/75 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" id="modalBg"></div>
         <div class="bottom-sheet liquid-glass w-full max-w-md rounded-t-[36px] flex flex-col items-center pb-8 px-6 shadow-2xl relative z-10 max-h-[90vh] pointer-events-auto">
             <div class="w-full py-4 flex justify-center cursor-pointer" id="closeHandle"><div class="drag-handle"></div></div>
@@ -273,7 +265,7 @@
     </div>
 
     <!-- ================= ESCROW CONFIRMATION MODAL ================= -->
-    <div class="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center p-4" id="confirmOverlay">
+    <div class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4" id="confirmOverlay">
         <div class="absolute inset-0 bg-[#0e0e0e]/85 backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-auto" id="confirmBg"></div>
         <div class="glass-card w-full max-w-sm rounded-[24px] p-6 flex flex-col items-center text-center relative z-10 scale-95 opacity-0 transition-all duration-300" id="confirmCard">
             <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4 text-primary"><span class="material-symbols-outlined text-2xl">check_circle</span></div>
@@ -322,7 +314,6 @@
         let shoppingCart = [];
         let filterData = { gift_types: [], models: [], backdrops: [] };
 
-        // Unified Patterns structure
         const PRESET_PATTERNS = [
             { name: "Collectible", searchName: "Collectible" },
             { name: "Star", searchName: "Star" },
@@ -330,7 +321,6 @@
             { name: "Heart", searchName: "Heart" }
         ];
 
-        // Renders user avatar initials inside profile page layout
         function setProfileAvatar() {
             const initials = user.first_name ? user.first_name.slice(0, 2).toUpperCase() : "TG";
             document.getElementById('userInitials').textContent = initials;
@@ -348,9 +338,11 @@
         // --- DYNAMIC SEARCH & SELECTION SYSTEM ---
         function openFilterSelectorWindow() {
             const modal = document.getElementById('filterSelectorModalOverlay');
-            modal.classList.remove('pointer-events-none');
-            modal.querySelector('.bottom-sheet').classList.add('active');
-            modal.querySelector('.absolute').classList.add('opacity-100');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.querySelector('.bottom-sheet').classList.add('active');
+                modal.querySelector('.absolute').classList.add('opacity-100');
+            }, 10);
             performSearchFilter();
         }
 
@@ -358,7 +350,9 @@
             const modal = document.getElementById('filterSelectorModalOverlay');
             modal.querySelector('.bottom-sheet').classList.remove('active');
             modal.querySelector('.absolute').classList.remove('opacity-100');
-            setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         function performSearchFilter() {
@@ -472,7 +466,6 @@
                 setProfileAvatar();
                 await runSynchronizedUpdates();
                 
-                // Initialize background polling loop every 4 seconds
                 setInterval(runSynchronizedUpdates, 4000);
             } catch(e) { console.error(e); }
         }
@@ -711,7 +704,6 @@
         let tonConnectUI;
         document.addEventListener("DOMContentLoaded", () => {
             tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                // Directly points to local backend endpoints, preventing dapp manifest errors
                 manifestUrl: `${API_BASE}/tonconnect-manifest.json`,
                 buttonRootId: 'ton-connect-btn'
             });
@@ -761,10 +753,12 @@
         // --- OFF-CHAIN OFFERS ENGINE ---
         function openOfferModal() {
             const overlay = document.getElementById('offerModalOverlay');
-            overlay.classList.remove('pointer-events-none');
-            document.getElementById('offerCard').classList.remove('scale-95', 'opacity-0');
-            document.getElementById('offerCard').classList.add('scale-100', 'opacity-100');
-            overlay.querySelector('.absolute').classList.add('opacity-100');
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('offerCard').classList.remove('scale-95', 'opacity-0');
+                document.getElementById('offerCard').classList.add('scale-100', 'opacity-100');
+                overlay.querySelector('.absolute').classList.add('opacity-100');
+            }, 10);
         }
 
         function closeOfferModal() {
@@ -772,7 +766,9 @@
             document.getElementById('offerCard').classList.add('scale-95', 'opacity-0');
             document.getElementById('offerCard').classList.remove('scale-100', 'opacity-100');
             overlay.querySelector('.absolute').classList.remove('opacity-100');
-            setTimeout(() => overlay.classList.add('pointer-events-none'), 300);
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
         }
 
         async function submitOfferToBackend() {
@@ -823,7 +819,6 @@
             bentoBackdrop.textContent = gift.backdrop || "Default Glow";
             bentoSymbol.textContent = gift.symbol || "Stars";
 
-            // Prevent self-buying inside detail sheet modal
             const isSelf = gift.owner_id === USER_TG_ID;
             modalActionsBox.innerHTML = '';
             if (isSelf) {
@@ -840,10 +835,11 @@
                 `;
             }
 
-            detailModalOverlay.classList.remove('pointer-events-none');
-            detailModalOverlay.classList.add('pointer-events-auto');
-            document.getElementById('modalBg').classList.add('opacity-100');
-            sheet.classList.add('active');
+            detailModalOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modalBg').classList.add('opacity-100');
+                sheet.classList.add('active');
+            }, 10);
 
             const isUnique = gift.slug && !gift.slug.startsWith("standard-") && !gift.slug.startsWith("mock-gift-");
             if (isUnique) {
@@ -864,8 +860,9 @@
         function closePreviewModal() {
             document.getElementById('modalBg').classList.remove('opacity-100');
             sheet.classList.remove('active');
-            detailModalOverlay.classList.remove('pointer-events-auto');
-            detailModalOverlay.classList.add('pointer-events-none');
+            setTimeout(() => {
+                detailModalOverlay.classList.add('hidden');
+            }, 300);
             if (activeAnimation) {
                 activeAnimation.destroy();
                 activeAnimation = null;
@@ -917,11 +914,12 @@
             const card = document.getElementById('confirmCard');
             const bg = document.getElementById('confirmBg');
 
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('pointer-events-auto');
-            bg.classList.add('opacity-100');
-            card.classList.remove('scale-95', 'opacity-0');
-            card.classList.add('scale-100', 'opacity-100');
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                bg.classList.add('opacity-100');
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
 
         function closeSuccessModal() {
@@ -929,11 +927,12 @@
             const card = document.getElementById('confirmCard');
             const bg = document.getElementById('confirmBg');
 
-            overlay.classList.remove('pointer-events-auto');
-            overlay.classList.add('pointer-events-none');
             bg.classList.remove('opacity-100');
             card.classList.remove('scale-100', 'opacity-100');
             card.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
         }
 
         document.getElementById('closeHandle').addEventListener('click', closePreviewModal);
